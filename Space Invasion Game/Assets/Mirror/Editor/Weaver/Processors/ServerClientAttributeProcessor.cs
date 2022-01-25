@@ -69,7 +69,7 @@ namespace Mirror.Weaver
                 InjectServerGuard(weaverTypes, md, true);
             else if (md.HasCustomAttribute<ServerCallbackAttribute>())
                 InjectServerGuard(weaverTypes, md, false);
-            else if (md.HasCustomAttribute<ClientAttribute>())
+            else if (md.HasCustomAttribute<ClientCallBack>())
                 InjectClientGuard(weaverTypes, md, true);
             else if (md.HasCustomAttribute<ClientCallbackAttribute>())
                 InjectClientGuard(weaverTypes, md, false);

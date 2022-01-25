@@ -62,7 +62,7 @@ namespace Mirror
     /// <para>Prints a warning if the server tries to execute this method.</para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class ClientAttribute : Attribute {}
+    public class ClientCallBack : Attribute {}
 
     /// <summary>
     /// Prevents the server from running this method.
