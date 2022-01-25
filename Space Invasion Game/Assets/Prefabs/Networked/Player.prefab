@@ -410,6 +410,7 @@ MonoBehaviour:
   moveSpeed: 5
   arm: {fileID: 9138634387556622230}
   hand: {fileID: 4898767284618445689}
+  bulletVFX: {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}
 --- !u!114 &3822663126351197365
 MonoBehaviour:
   m_ObjectHideFlags: 0

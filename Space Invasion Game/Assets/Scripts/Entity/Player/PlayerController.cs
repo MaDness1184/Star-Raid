@@ -12,6 +12,7 @@ public class PlayerController : EntityController
     [Header("Required Components")]
     [SerializeField] private Transform arm;
     [SerializeField] private Transform hand;
+    [SerializeField] private GameObject bulletVFX;
 
     Rigidbody2D rb2D;
 
@@ -89,7 +90,22 @@ public class PlayerController : EntityController
         {
             //BulletTrailVfx(transform.position + transform.right * maxRange);
         }
+
+        CmdBulletVFX();
     }
+
+    [Command]
+    private void CmdBulletVFX()
+    {
+        RpcBulletVFX();
+    }
+
+    [ClientRpc]
+    private void RpcBulletVFX()
+    {
+        Instantiate(bulletVFX, hand.position, arm.rotation);
+    } 
+
 
     [ClientCallback]
     private void Update()
