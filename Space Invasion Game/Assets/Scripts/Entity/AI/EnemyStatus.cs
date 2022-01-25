@@ -22,7 +22,9 @@ public class EnemyStatus : EntityStatus
     void Start()
     {
         if (isServer)
+        {
             _currentHP = maxHP;
+        }  
     }
 
     [Server]
