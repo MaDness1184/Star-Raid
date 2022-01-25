@@ -24,6 +24,7 @@ public class EnemyStatus : EntityStatus
         if (isServer)
         {
             _currentHP = maxHP;
+            Hive.instance.NotifyEnemySpawn();
         }  
     }
 
@@ -33,12 +34,13 @@ public class EnemyStatus : EntityStatus
 
         if (_currentHP <= 0)
         {
-            Debug.Log(gameObject.name + " died");
+            Hive.instance.NotifyEnemyDeSpawn();
+            NetworkServer.Destroy(gameObject);
         }
         else
         {
             _currentHP -= damage;
-            Debug.Log(gameObject.name + " HP = " + _currentHP);
+            //Debug.Log(gameObject.name + " HP = " + _currentHP);
         }
     }
 }

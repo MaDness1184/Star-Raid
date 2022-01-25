@@ -45,6 +45,9 @@ public class EnemyController : EntityController
     {
         if (Time.time > nextPathUpdate)
         {
+            if (target == null)
+                target = Hive.instance.GetTarget();
+
             if (seeker.IsDone() && target != null)
                 seeker.StartPath(rbody.position, target.position, OnPathComplete);
             nextPathUpdate = Time.time + pathUpdateCdr;

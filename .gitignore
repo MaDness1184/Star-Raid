@@ -36,12 +36,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Space Invasion Game/ProjectSettings/ProjectSettings.asset
-Space Invasion Game/Logs/shadercompiler-UnityShaderCompiler.exe1.log
-Space Invasion Game/Logs/shadercompiler-UnityShaderCompiler.exe2.log
-Space Invasion Game/Logs/shadercompiler-UnityShaderCompiler.exe3.log
-Space Invasion Game/Logs/shadercompiler-UnityShaderCompiler.exe4.log
-Space Invasion Game/Logs/shadercompiler-UnityShaderCompiler.exe5.log
-Space Invasion Game/Logs/shadercompiler-UnityShaderCompiler.exe6.log
-Space Invasion Game/Logs/shadercompiler-UnityShaderCompiler.exe7.log
-Space Invasion Game/Logs/AssetImportWorker0.log
-Space Invasion Game/Logs/AssetImportWorker0.log
+Space Invasion Game/Logs/

@@ -1,3 +1,4 @@
+using Cinemachine;
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,6 +24,11 @@ public class PlayerStatus : EntityStatus
     {
         if (isServer)
             _currentHP = maxHP;
+
+        if (isLocalPlayer)
+            Camera.main.GetComponent<CinemachineVirtualCamera>().Follow = gameObject.transform;
+
+            
     }
 
     [Server]

@@ -29,6 +29,7 @@ public class PlayerController : EntityController
         var playerInput = GetComponent<PlayerInput>();
         inputActions = playerInput.actions["aim"];
     }
+    #region Movement
 
     [ClientCallBack]
     public void OnMove(InputAction.CallbackContext context)
@@ -43,6 +44,36 @@ public class PlayerController : EntityController
             movement = Vector2.zero;
         }
     }
+
+    #endregion
+
+    #region Aim
+
+    [ClientCallback]
+    private void Aim() // directional animation variables changed in here for now
+    {
+        //if (!status.canLook) return;
+        var mousePosition = inputActions.ReadValue<Vector2>();
+        Vector2 cursor = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector2 difference = cursor - new Vector2(arm.position.x, arm.position.y);
+        difference.Normalize();
+        UpdateAnimationDirection(difference);
+        //lookDirection = difference;
+        // Calculate angel
+        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+        arm.rotation = Quaternion.Euler(0f, 0f, rotZ);
+    }
+
+    [ClientCallBack]
+    private void UpdateAnimationDirection(Vector2 newDirection)
+    {
+        _Animator.SetFloat("directionX", newDirection.x);
+        _Animator.SetFloat("directionY", newDirection.y);
+    }
+
+    #endregion
+
+    #region Attack
 
     [ClientCallBack]
     public void OnPrimaryAttack(InputAction.CallbackContext context)
@@ -59,20 +90,6 @@ public class PlayerController : EntityController
         }
     }
 
-    [ClientCallback]
-    private void Aim() // directional animation variables changed in here for now
-    {
-        //if (!status.canLook) return;
-        var mousePosition = inputActions.ReadValue<Vector2>();
-        Vector2 cursor = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector2 difference = cursor - new Vector2(arm.position.x, arm.position.y);
-        difference.Normalize();
-        UpdateAnimationDirection(difference);
-        //lookDirection = difference;
-        // Calculate angel
-        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        arm.rotation = Quaternion.Euler(0f, 0f, rotZ);
-    }
 
     [ClientCallback]
     private void Shoot()
@@ -106,8 +123,9 @@ public class PlayerController : EntityController
     private void RpcBulletVFX()
     {
         Instantiate(bulletVFX, hand.position, arm.rotation);
-    } 
+    }
 
+    #endregion
 
     [ClientCallback]
     private void Update()
@@ -122,12 +140,4 @@ public class PlayerController : EntityController
     {
         rb2D.MovePosition(rb2D.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
-
-    [ClientCallBack]
-    private void UpdateAnimationDirection(Vector2 newDirection)
-    {
-        _Animator.SetFloat("directionX", newDirection.x);
-        _Animator.SetFloat("directionY", newDirection.y);
-    }
-
 }
