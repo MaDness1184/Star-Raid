@@ -504,3 +504,11 @@ AssetImportParameters requested are different than current active one (requested
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 1003.809753 seconds.
+  path: Assets/Art/Placeholder Sprites/Broadsword_Swipe.gif
+  artifactKey: Guid(761cc268def659b4b87fb50c50e9b6a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Placeholder Sprites/Broadsword_Swipe.gif using Guid(761cc268def659b4b87fb50c50e9b6a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0fe9c6e9630a5f2da3257ae8a763445f') in 0.072202 seconds 
+  Import took 0.080103 seconds .
+
