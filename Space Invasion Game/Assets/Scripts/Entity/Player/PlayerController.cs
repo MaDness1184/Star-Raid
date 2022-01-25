@@ -29,6 +29,20 @@ public class PlayerController : EntityController
         inputActions = playerInput.actions["aim"];
     }
 
+    [ClientCallback]
+    private void Update()
+    {
+        if (!isLocalPlayer || !NetworkClient.ready) return;
+
+        Aim();
+    }
+
+    [ClientCallBack]
+    private void FixedUpdate()
+    {
+        rb2D.MovePosition(rb2D.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
     [ClientCallBack]
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -36,8 +50,7 @@ public class PlayerController : EntityController
 
         if (context.performed)
         {
-            movement = context.ReadValue<Vector2>();
-        }
+            movement = context.ReadValue<Vector2>();        }
         else if (context.canceled)
         {
             movement = Vector2.zero;
@@ -60,7 +73,7 @@ public class PlayerController : EntityController
     }
 
     [ClientCallback]
-    private void Aim()
+    private void Aim() // directional animation variables changed in here for now
     {
         //if (!status.canLook) return;
         var mousePosition = inputActions.ReadValue<Vector2>();
@@ -92,20 +105,6 @@ public class PlayerController : EntityController
         {
             //BulletTrailVfx(transform.position + transform.right * maxRange);
         }
-    }
-
-    [ClientCallback]
-    private void Update()
-    {
-        if (!isLocalPlayer || !NetworkClient.ready) return;
-
-        Aim();
-    }
-
-    [ClientCallBack]
-    private void FixedUpdate()
-    {
-        rb2D.MovePosition(rb2D.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
     [ClientCallBack]
