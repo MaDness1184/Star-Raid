@@ -29,20 +29,6 @@ public class PlayerController : EntityController
         inputActions = playerInput.actions["aim"];
     }
 
-    [ClientCallback]
-    private void Update()
-    {
-        if (!isLocalPlayer || !NetworkClient.ready) return;
-
-        Aim();
-    }
-
-    [ClientCallBack]
-    private void FixedUpdate()
-    {
-        rb2D.MovePosition(rb2D.position + movement * moveSpeed * Time.fixedDeltaTime);
-    }
-
     [ClientCallBack]
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -105,6 +91,20 @@ public class PlayerController : EntityController
         {
             //BulletTrailVfx(transform.position + transform.right * maxRange);
         }
+    }
+
+    [ClientCallback]
+    private void Update()
+    {
+        if (!isLocalPlayer || !NetworkClient.ready) return;
+
+        Aim();
+    }
+
+    [ClientCallBack]
+    private void FixedUpdate()
+    {
+        rb2D.MovePosition(rb2D.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
     [ClientCallBack]
