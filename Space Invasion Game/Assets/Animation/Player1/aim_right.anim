@@ -30,7 +30,11 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: -4241431810081623130, guid: 58b7addffda41c2488239f9654a6da4b, type: 3}
+<<<<<<< Updated upstream
     - time: 0.083333336
+=======
+    - time: 0.1
+>>>>>>> Stashed changes
       value: {fileID: -4241431810081623130, guid: 58b7addffda41c2488239f9654a6da4b, type: 3}
     attribute: m_Sprite
     path: Sprites/Head
@@ -67,7 +71,11 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
+<<<<<<< Updated upstream
     m_StopTime: 0.1
+=======
+    m_StopTime: 0.11666667
+>>>>>>> Stashed changes
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
