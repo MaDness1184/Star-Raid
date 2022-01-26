@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerWeaponSystem))]
 public class PlayerController : EntityController
 {
+  
+
     [Header("Settings")]
     [SerializeField ]private float moveSpeed = 5f;
 
@@ -15,7 +18,8 @@ public class PlayerController : EntityController
     [SerializeField] private GameObject bulletVFX;
 
     Rigidbody2D rb2D;
-    Animator _Animator;
+    Animator animator;
+    PlayerWeaponSystem playerWeaponSystem;
 
     InputAction inputActions;
 
@@ -24,11 +28,12 @@ public class PlayerController : EntityController
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        _Animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
 
         var playerInput = GetComponent<PlayerInput>();
         inputActions = playerInput.actions["aim"];
     }
+
     #region Movement
 
     [ClientCallBack]
@@ -67,8 +72,8 @@ public class PlayerController : EntityController
     [ClientCallBack]
     private void UpdateAnimationDirection(Vector2 newDirection)
     {
-        _Animator.SetFloat("directionX", newDirection.x);
-        _Animator.SetFloat("directionY", newDirection.y);
+        animator.SetFloat("directionX", newDirection.x);
+        animator.SetFloat("directionY", newDirection.y);
     }
 
     #endregion
@@ -82,7 +87,7 @@ public class PlayerController : EntityController
 
         if (context.performed)
         {
-            Shoot();
+            playerWeaponSystem.PrimaryPerformed();
         }
         else if (context.canceled)
         {
@@ -90,40 +95,6 @@ public class PlayerController : EntityController
         }
     }
 
-
-    [ClientCallback]
-    private void Shoot()
-    {
-        //Raycast
-        RaycastHit2D hit = Physics2D.Raycast(hand.position, hand.right, 30f);
-
-        if (hit)
-        {
-            //BulletTrailVfx(hit.point);
-            if (hit.collider.TryGetComponent<EntityStatus>(out EntityStatus entityStatus))
-            {
-                entityStatus.CmdDealDamage(1);
-            }
-        }
-        else
-        {
-            //BulletTrailVfx(transform.position + transform.right * maxRange);
-        }
-
-        CmdBulletVFX();
-    }
-
-    [Command]
-    private void CmdBulletVFX()
-    {
-        RpcBulletVFX();
-    }
-
-    [ClientRpc]
-    private void RpcBulletVFX()
-    {
-        Instantiate(bulletVFX, hand.position, arm.rotation);
-    }
 
     #endregion
 
