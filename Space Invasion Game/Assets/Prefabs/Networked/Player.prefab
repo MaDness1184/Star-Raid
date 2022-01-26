@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 7684498826280063222}
   - component: {fileID: 7951272049336202500}
   - component: {fileID: 3822663126351197365}
+  - component: {fileID: -1871040489349909815}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -468,3 +469,20 @@ MonoBehaviour:
   syncInterval: 0.1
   maxHP: 10
   _currentHP: 0
+--- !u!114 &-1871040489349909815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7951272049336202496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add655827f279c64c99a7fde2cec49ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  arm: {fileID: 9138634387556622230}
+  hand: {fileID: 4898767284618445689}
+  bulletVFX: {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}
