@@ -29,6 +29,7 @@ public class PlayerController : EntityController
     {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        playerWeaponSystem = GetComponent<PlayerWeaponSystem>();
 
         var playerInput = GetComponent<PlayerInput>();
         inputActions = playerInput.actions["aim"];
