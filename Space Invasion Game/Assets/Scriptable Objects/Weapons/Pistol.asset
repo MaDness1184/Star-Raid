@@ -22,3 +22,4 @@ MonoBehaviour:
   magazineSize: 15
   pelletPerShot: 1
   primaryCdr: 0.2
+  bulletVfx: {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}

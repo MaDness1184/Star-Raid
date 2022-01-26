@@ -92,7 +92,7 @@ public class PlayerController : EntityController
         }
         else if (context.canceled)
         {
-            //Debug.Log("Primary attack canceled");
+            playerWeaponSystem.PrimaryReleased();
         }
     }
 

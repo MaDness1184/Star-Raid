@@ -393,6 +393,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ec7c380a-4c6d-4fce-bc2f-af222dc67f5c
     m_ActionName: PlayerMap/Aim[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -1871040489349909815}
+        m_TargetAssemblyTypeName: PlayerWeaponSystem, Assembly-CSharp
+        m_MethodName: WeaponSelection
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8766d89d-6775-4810-86f7-965e0a38a77c
+    m_ActionName: PlayerMap/Hotkeys[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMap
@@ -485,4 +501,6 @@ MonoBehaviour:
   syncInterval: 0.1
   arm: {fileID: 9138634387556622230}
   hand: {fileID: 4898767284618445689}
-  bulletVFX: {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}
+  projectileWeapons:
+  - {fileID: 11400000, guid: c4a7a1593b747f445a03bd80f52673b8, type: 2}
+  - {fileID: 11400000, guid: 77e92b8f74bfdc1408b8f20ee2f9f112, type: 2}
