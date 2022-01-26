@@ -38,5 +38,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Space Invasion Game/ProjectSettings/ProjectSettings.asset
-Space Invasion Game/Logs/
-*.log
+
