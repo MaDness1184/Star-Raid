@@ -9,9 +9,9 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [Header("Required Components")]
     [SerializeField] private Transform arm;
     [SerializeField] private Transform hand;
+    [SerializeField] private Transform projectileParent;
     [SerializeField] private ProjectileWeapon[] projectileWeapons;
     [Header("Required Components")]
-
 
     [Header("Debugs")]
     [SerializeField][SyncVar] 
@@ -211,7 +211,8 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [ClientRpc]
     private void RpcBulletVFX(Quaternion spreadRot)
     {
-        Instantiate(currentWeapon.projectileVfxs[0], hand.position, arm.rotation * spreadRot);
+        GameObject bullet = Instantiate(currentWeapon.projectileVfxs[0], hand.position, arm.rotation * spreadRot) as GameObject;
+        bullet.transform.SetParent(projectileParent); // bullet set under Projectile parent in hierarchy
     }
 
     #endregion

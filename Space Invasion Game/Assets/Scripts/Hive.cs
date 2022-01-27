@@ -35,7 +35,8 @@ public class Hive : NetworkBehaviour
         if(Time.time > nextSpawn && population <= spawnLimit)
         {
             nextSpawn += spawnCdr;
-            GameObject enemyGO = Instantiate(enemy);
+            GameObject enemyGO = Instantiate(enemy) as GameObject;
+            enemyGO.transform.SetParent(transform); // Put the enemy under the hive
             NetworkServer.Spawn(enemyGO);
         }
     }
