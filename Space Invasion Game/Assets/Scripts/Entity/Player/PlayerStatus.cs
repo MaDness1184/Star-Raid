@@ -6,43 +6,65 @@ using UnityEngine;
 
 public class PlayerStatus : EntityStatus
 {
-    [Header("Settings")]
-    [SerializeField] private int maxHP = 10;
+    //Header("Settings")]
 
-    [Header("Debugs")]
-    [SyncVar(hook = nameof(HandleHPChange))]
-    [SerializeField] protected int _currentHP;
+    [Header("Player Debugs")]
+    [SyncVar(hook = nameof(HandleNameChange))]
+    [SerializeField] private string playerName = "Uninitialized";
 
-    protected virtual void HandleHPChange(int oldHP, int newHP)
+    #region Name Change
+
+    [Server]
+    public void ChangePlayerName(string newName)
     {
-        //UpdateUI
-        
+        playerName = newName;
     }
+
+    private void HandleNameChange(string oldName, string newName)
+    {
+        if (!hasAuthority) return;
+
+        gameObject.name = newName;
+        PlayerUI.instance.SetPlayerName(newName);
+    }
+
+    #endregion
+
+    #region HP Change
+
+    protected override void HandleHPChange(int oldHP, int newHP)
+    {
+        base.HandleHPChange(oldHP, newHP);
+
+        if (!hasAuthority) return;
+
+        PlayerUI.instance.SetPlayerHP(newHP);
+    }
+
+    #endregion
+
 
     // Start is called before the first frame update
     void Start()
     {
         if (isServer)
-            _currentHP = maxHP;
+            internalCurrentHP = maxHP;
 
         if (isLocalPlayer)
-            Camera.main.GetComponent<CinemachineVirtualCamera>().Follow = gameObject.transform;
-
-            
+            Camera.main.GetComponent<CinemachineVirtualCamera>().Follow = gameObject.transform; 
     }
 
     [Server]
     protected override void DealDamage(int damage)
     {
-        
-        if(_currentHP <= 0)
+        if(internalCurrentHP <= 0)
         {
             Debug.Log(gameObject.name + " died");
         }
         else
         {
-            _currentHP -= damage;
-            Debug.Log(gameObject.name + " HP = " + _currentHP);
+            internalCurrentHP -= damage;
+            Debug.Log(gameObject.name + " HP = " + internalCurrentHP);
         }
     }
 }

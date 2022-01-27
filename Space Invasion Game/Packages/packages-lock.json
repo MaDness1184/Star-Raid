@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.mirror.steamworks.net": {
+      "version": "https://github.com/Chykary/FizzySteamworks.git?path=/com.mirror.steamworks.net",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "71be1e3246af9aad6dc4f28387f8fa3b4a1c3aa8"
+    },
     "com.unity.2d.animation": {
       "version": "5.0.10",
       "depth": 0,

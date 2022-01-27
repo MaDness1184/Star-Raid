@@ -5,7 +5,18 @@ using UnityEngine;
 
 public class EntityStatus : NetworkBehaviour
 {
+    [Header("Entity Settings")]
+    [SerializeField] protected readonly int maxHP = 10;
     [SerializeField] private HostilityType hostility;
+
+    [Header("Entity Debug")]
+    [SyncVar(hook = nameof(HandleHPChange))]
+    [SerializeField] protected int internalCurrentHP;
+
+    protected virtual void HandleHPChange(int oldHP, int newHP)
+    {
+        //UpdateUI
+    }
 
     [Command(requiresAuthority = false)]
     public void CmdDealDamage(int damage) 
@@ -19,11 +30,10 @@ public class EntityStatus : NetworkBehaviour
 
     }
 
-    public void GetCurrentHP()
+    public int GetCurrentHP()
     {
-
+        return internalCurrentHP;
     }
-
 
     public HostilityType GetHostility()
     {

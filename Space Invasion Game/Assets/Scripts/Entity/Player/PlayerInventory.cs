@@ -64,6 +64,6 @@ public class PlayerInventory : EntityInventory
             result +=     keyValuePair.Key.ToString().Substring(0,2) 
                 + ":" + keyValuePair.Value + " | ";
         }
-        return result.Substring(0, result.Length - 2);
+        return result.Substring(0, result.Length - 3);
     }
 }

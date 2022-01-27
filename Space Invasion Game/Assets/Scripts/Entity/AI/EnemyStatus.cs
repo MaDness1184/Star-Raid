@@ -5,25 +5,12 @@ using UnityEngine;
 
 public class EnemyStatus : EntityStatus
 {
-    [Header("Settings")]
-    [SerializeField] private int maxHP = 10;
-
-    [Header("Debugs")]
-    [SyncVar(hook = nameof(HandleHPChange))]
-    [SerializeField] protected int _currentHP;
-
-    protected virtual void HandleHPChange(int oldHP, int newHP)
-    {
-        //UpdateUI
-
-    }
-
     // Start is called before the first frame update
     void Start()
     {
         if (isServer)
         {
-            _currentHP = maxHP;
+            internalCurrentHP = maxHP;
             Hive.instance.NotifyEnemySpawn();
         }  
     }
@@ -32,14 +19,14 @@ public class EnemyStatus : EntityStatus
     protected override void DealDamage(int damage)
     {
 
-        if (_currentHP <= 0)
+        if (internalCurrentHP <= 0)
         {
             Hive.instance.NotifyEnemyDeSpawn();
             NetworkServer.Destroy(gameObject);
         }
         else
         {
-            _currentHP -= damage;
+            internalCurrentHP -= damage;
             //Debug.Log(gameObject.name + " HP = " + _currentHP);
         }
     }
