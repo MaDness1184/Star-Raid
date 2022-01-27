@@ -12,7 +12,6 @@ TagManager:
   - Water
   - UI
   - Obstacle
-  - Entity
   - 
   - 
   - 
@@ -36,7 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - Bullet VFX
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
