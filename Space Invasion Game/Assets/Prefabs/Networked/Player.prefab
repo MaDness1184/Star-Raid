@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8651848769380980833}
   - component: {fileID: 7731510546941726604}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9138634387556622230}
   - component: {fileID: 6063305726403975132}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4898767284618445689}
   - component: {fileID: 2417027905053215136}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6779433567473647512}
   - component: {fileID: 309491768301331744}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,8 +348,9 @@ GameObject:
   - component: {fileID: 7684498826280063222}
   - component: {fileID: 7951272049336202500}
   - component: {fileID: 3822663126351197365}
-  - component: {fileID: -1871040489349909815}
-  m_Layer: 0
+  - component: {fileID: 2507997489485277239}
+  - component: {fileID: 536460584031505553}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,6 +558,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ec7c380a-4c6d-4fce-bc2f-af222dc67f5c
     m_ActionName: PlayerMap/Aim[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 536460584031505553}
+        m_TargetAssemblyTypeName: PlayerWeaponSystem, Assembly-CSharp
+        m_MethodName: WeaponSelection
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8766d89d-6775-4810-86f7-965e0a38a77c
+    m_ActionName: PlayerMap/Hotkeys[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMap
@@ -631,8 +648,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  hostility: 0
   maxHP: 10
   _currentHP: 0
+--- !u!114 &2507997489485277239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7951272049336202496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34aad6e1855632349bad4e91a6c4bb6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AmmoCounts:
+  - ammoType: 0
+    count: 200
+  - ammoType: 1
+    count: 20
+  - ammoType: 2
+    count: 20
+  - ammoType: 3
+    count: 100
+  - ammoType: 4
+    count: 200
+--- !u!114 &536460584031505553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7951272049336202496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add655827f279c64c99a7fde2cec49ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  arm: {fileID: 9138634387556622230}
+  hand: {fileID: 4898767284618445689}
+  projectileWeapons:
+  - {fileID: 11400000, guid: c4a7a1593b747f445a03bd80f52673b8, type: 2}
+  - {fileID: 11400000, guid: 07f9e70196fc6324587f426ac0a3d04b, type: 2}
+  - {fileID: 11400000, guid: ee4f726f327c4ef488608df470d2f55b, type: 2}
+  - {fileID: 11400000, guid: 0b5359eb32b0a9948868e4ea50d42227, type: 2}
 --- !u!1 &8770114581583419512
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +706,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1971885162397871580}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprites
   m_TagString: Untagged
   m_Icon: {fileID: 0}

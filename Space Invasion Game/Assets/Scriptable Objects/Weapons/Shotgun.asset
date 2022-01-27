@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 192d6cb9e64a7e94dbcc57461a8bc280, type: 3}
-  m_Name: Pistol
+  m_Name: Shotgun
   m_EditorClassIdentifier: 
-  weaponName: Pistol
-  weaponSlot: 0
+  weaponName: Shotgun
+  weaponSlot: 2
   automatic: 0
   ammoType: 0
   damage: 2
-  spread: 5
-  reloadTime: 0.5
-  magazineSize: 15
-  pelletPerShot: 1
-  primaryCdr: 0.3
+  spread: 10
+  reloadTime: 1
+  magazineSize: 7
+  pelletPerShot: 5
+  primaryCdr: 0.5
   secondaryCdr: 0
   projectileVfxs:
   - {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}

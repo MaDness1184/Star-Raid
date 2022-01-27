@@ -13,4 +13,7 @@ public class ProjectileWeapon : ScriptableObject
     public int magazineSize;
     public int pelletPerShot;
     public float primaryCdr;
+    public float secondaryCdr;
+    public GameObject[] projectileVfxs;
+    public AudioClip[] projectileSfxs;
 }

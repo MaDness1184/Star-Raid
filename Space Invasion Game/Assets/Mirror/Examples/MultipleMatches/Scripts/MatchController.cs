@@ -183,7 +183,7 @@ namespace Mirror.Examples.MultipleMatch
         }
 
         // Assigned in inspector to ReplayButton::OnClick
-        [ClientCallBack]
+        [Client]
         public void RequestPlayAgain()
         {
             playAgainButton.gameObject.SetActive(false);
@@ -239,7 +239,7 @@ namespace Mirror.Examples.MultipleMatch
         }
 
         // Assigned in inspector to BackButton::OnClick
-        [ClientCallBack]
+        [Client]
         public void RequestExitGame()
         {
             exitButton.gameObject.SetActive(false);

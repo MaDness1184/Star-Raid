@@ -10,10 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 192d6cb9e64a7e94dbcc57461a8bc280, type: 3}
-  m_Name: Smg
+  m_Name: Submachine Gun
   m_EditorClassIdentifier: 
-  weaponName: 
-  weaponSlot: 0
-  automatic: 0
+  weaponName: Submachine Gun
+  weaponSlot: 1
+  automatic: 1
   ammoType: 0
-  primaryCdr: 0
+  damage: 1
+  spread: 5
+  reloadTime: 0.7
+  magazineSize: 40
+  pelletPerShot: 1
+  primaryCdr: 0.1
+  secondaryCdr: 0
+  projectileVfxs:
+  - {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}
+  projectileSfxs: []
