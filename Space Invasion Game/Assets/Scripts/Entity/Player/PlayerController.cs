@@ -88,7 +88,6 @@ public class PlayerController : EntityController
 
         if (context.performed)
         {
-            animator.SetTrigger("shootTrigger");
             playerWeaponSystem.PrimaryPerformed();
         }
         else if (context.canceled)
