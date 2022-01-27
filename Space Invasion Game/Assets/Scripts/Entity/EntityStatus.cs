@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EntityStatus : NetworkBehaviour
 {
+    [SerializeField] private HostilityType hostility;
+
     [Command(requiresAuthority = false)]
     public void CmdDealDamage(int damage) 
     {
@@ -22,4 +24,9 @@ public class EntityStatus : NetworkBehaviour
 
     }
 
+
+    public HostilityType GetHostility()
+    {
+        return hostility;
+    }
 }
