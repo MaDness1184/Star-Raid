@@ -7,8 +7,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerWeaponSystem))]
 public class PlayerController : EntityController
 {
-  
-
     [Header("Settings")]
     [SerializeField ]private float moveSpeed = 5f;
 
@@ -37,7 +35,7 @@ public class PlayerController : EntityController
 
     #region Movement
 
-    [ClientCallBack]
+    [Client]
     public void OnMove(InputAction.CallbackContext context)
     {
         if (!isLocalPlayer) return;
@@ -55,7 +53,7 @@ public class PlayerController : EntityController
 
     #region Aim
 
-    [ClientCallback]
+    [Client]
     private void Aim() // directional animation variables changed in here for now
     {
         //if (!status.canLook) return;
@@ -70,7 +68,7 @@ public class PlayerController : EntityController
         arm.rotation = Quaternion.Euler(0f, 0f, rotZ);
     }
 
-    [ClientCallBack]
+    [Client]
     private void UpdateAnimationDirection(Vector2 newDirection)
     {
         animator.SetFloat("directionX", newDirection.x);
@@ -81,7 +79,7 @@ public class PlayerController : EntityController
 
     #region Attack
 
-    [ClientCallBack]
+    [Client]
     public void OnPrimaryAttack(InputAction.CallbackContext context)
     {
         if (!isLocalPlayer) return;
@@ -107,7 +105,7 @@ public class PlayerController : EntityController
         Aim();
     }
 
-    [ClientCallBack]
+    [ClientCallback]
     private void FixedUpdate()
     {
         rb2D.MovePosition(rb2D.position + movement * moveSpeed * Time.fixedDeltaTime);

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9138634387556622230}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4898767284618445689}
   - component: {fileID: 2417027905053215136}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,8 @@ GameObject:
   - component: {fileID: 7951272049336202500}
   - component: {fileID: 3822663126351197365}
   - component: {fileID: -1871040489349909815}
-  m_Layer: 0
+  - component: {fileID: 4972542131892166136}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,6 +484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  hostility: 0
   maxHP: 10
   _currentHP: 0
 --- !u!114 &-1871040489349909815
@@ -504,3 +506,30 @@ MonoBehaviour:
   projectileWeapons:
   - {fileID: 11400000, guid: c4a7a1593b747f445a03bd80f52673b8, type: 2}
   - {fileID: 11400000, guid: 77e92b8f74bfdc1408b8f20ee2f9f112, type: 2}
+  - {fileID: 11400000, guid: ee4f726f327c4ef488608df470d2f55b, type: 2}
+  - {fileID: 11400000, guid: 0b5359eb32b0a9948868e4ea50d42227, type: 2}
+--- !u!114 &4972542131892166136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7951272049336202496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34aad6e1855632349bad4e91a6c4bb6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AmmoCounts:
+  - ammoType: 0
+    count: 200
+  - ammoType: 1
+    count: 20
+  - ammoType: 2
+    count: 20
+  - ammoType: 3
+    count: 100
+  - ammoType: 4
+    count: 200
