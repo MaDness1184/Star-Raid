@@ -25,4 +25,3 @@ MonoBehaviour:
   secondaryCdr: 0
   projectileVfxs:
   - {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}
-  projectileSfxs: []

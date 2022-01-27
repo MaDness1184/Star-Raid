@@ -15,5 +15,4 @@ public class ProjectileWeapon : ScriptableObject
     public float primaryCdr;
     public float secondaryCdr;
     public GameObject[] projectileVfxs;
-    public AudioClip[] projectileSfxs;
 }

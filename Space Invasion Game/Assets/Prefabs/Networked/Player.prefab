@@ -697,6 +697,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 07f9e70196fc6324587f426ac0a3d04b, type: 2}
   - {fileID: 11400000, guid: ee4f726f327c4ef488608df470d2f55b, type: 2}
   - {fileID: 11400000, guid: 0b5359eb32b0a9948868e4ea50d42227, type: 2}
+  projectileVfx: {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}
 --- !u!1 &8770114581583419512
 GameObject:
   m_ObjectHideFlags: 0

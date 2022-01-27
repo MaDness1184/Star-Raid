@@ -55,4 +55,15 @@ public class PlayerInventory : EntityInventory
         public AmmoType ammoType;
         public int count;
     }
+
+    public string AmmoCountToString()
+    {
+        string result = "";
+        foreach(KeyValuePair<AmmoType,int> keyValuePair in internalAmmoCounts)
+        {
+            result +=     keyValuePair.Key.ToString().Substring(0,2) 
+                + ":" + keyValuePair.Value + " | ";
+        }
+        return result.Substring(0, result.Length - 2);
+    }
 }

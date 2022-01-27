@@ -10,10 +10,15 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [SerializeField] private Transform arm;
     [SerializeField] private Transform hand;
     [SerializeField] private ProjectileWeapon[] projectileWeapons;
+    [Header("Required Components")]
+
 
     [Header("Debugs")]
+    [SerializeField][SyncVar] 
+    private int currentWeaponIndex;
     private ProjectileWeapon currentWeapon;
     private PlayerInventory playerInventory;
+    private Animator animator;
 
     private bool canShootAgain;
     private float nextPrimaryShootable;
@@ -24,10 +29,13 @@ public class PlayerWeaponSystem : NetworkBehaviour
     private void Start()
     {
         playerInventory = GetComponent<PlayerInventory>();
+        animator = GetComponent<Animator>();
 
+        currentWeaponIndex = 0;
         currentWeapon = projectileWeapons[0];
 
         if (!isServer) return;
+
         for(int i  = 0; i < projectileWeapons.Length; i++)
         {
             currentAmmoCounts.Add(projectileWeapons[i].magazineSize);
@@ -38,17 +46,28 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [ClientCallback]
     public void WeaponSelection (InputAction.CallbackContext context)
     {
+        if (!hasAuthority) return;
+
         if (context.performed)
         {
             int hotkeyNum = int.Parse(context.control.name) - 1;
             if(hotkeyNum < projectileWeapons.Length)
             {
+                CmdSwitchWeapon(hotkeyNum);
+
+                currentWeaponIndex = hotkeyNum;
                 currentWeapon = projectileWeapons[hotkeyNum];
                 if (currentWeapon.automatic) canShootAgain = true;
             }
 
-            Debug.Log("Current weapon is " + currentWeapon.name);
+            reloading = false;
         }
+    }
+
+    [Command]
+    private void CmdSwitchWeapon(int weaponSlot)
+    {
+        currentWeaponIndex = weaponSlot;
     }
 
     #endregion
@@ -60,7 +79,7 @@ public class PlayerWeaponSystem : NetworkBehaviour
     {
         if (reloading) return false;
 
-        if (currentAmmoCounts[currentWeapon.weaponSlot] <= 0)
+        if (currentAmmoCounts[currentWeaponIndex] <= 0)
         {
             StartCoroutine(Reload());
             return false;
@@ -75,10 +94,10 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [Command] 
     private void CmdSpendAmmo()
     {
-        currentAmmoCounts[currentWeapon.weaponSlot]--;
+        currentAmmoCounts[currentWeaponIndex]--;
     }
 
-    [ClientCallback]
+    [Client]
     public void PrimaryPerformed()
     {
         if (!PrimaryAmmoCheck()) return;
@@ -118,10 +137,10 @@ public class PlayerWeaponSystem : NetworkBehaviour
         reloading = false;
     }
 
-    [ClientRpc]
+    [Server]
     public void RpcReload(int amount)
     {
-        currentAmmoCounts[currentWeapon.weaponSlot] = amount;
+        currentAmmoCounts[currentWeaponIndex] = amount;
     }
 
     #endregion
@@ -147,7 +166,6 @@ public class PlayerWeaponSystem : NetworkBehaviour
         {
             Quaternion spreadRot = Quaternion.Euler(0, 0, Random.Range(-currentWeapon.spread, currentWeapon.spread));
             RaycastHit2D[] hitArray = Physics2D.RaycastAll(hand.position, spreadRot * hand.right, 30f);
-            Debug.Log("hitArray length = " + hitArray.Length);
 
             if (hitArray.Length > 0)
             {
@@ -174,6 +192,10 @@ public class PlayerWeaponSystem : NetworkBehaviour
 
             CmdBulletVFX(spreadRot);
         }
+
+        // Character VFX
+        animator.SetTrigger("shootTrigger");
+        // TODO: gun sound here
     }
 
     #endregion
@@ -193,6 +215,19 @@ public class PlayerWeaponSystem : NetworkBehaviour
     }
 
     #endregion
+
+    [ClientCallback]
+    private void Update()
+    {
+        if (!hasAuthority) return;
+
+        if (!NetworkClient.ready || currentAmmoCounts.Count <= 0) return;
+
+        PlayerUI.instance.updateText(currentWeapon.name + " "
+            + currentAmmoCounts[currentWeaponIndex]
+            + "/" + currentWeapon.magazineSize
+            + "\n" + playerInventory.AmmoCountToString());
+    }
 
 
     private void OnDrawGizmos()

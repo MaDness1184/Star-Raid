@@ -35,10 +35,10 @@ public class PlayerController : EntityController
 
     #region Movement
 
-    [Client]
+    [ClientCallback]
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (!isLocalPlayer) return;
+        if (!hasAuthority) return;
 
         if (context.performed)
         {
@@ -79,14 +79,13 @@ public class PlayerController : EntityController
 
     #region Attack
 
-    [Client]
+    [ClientCallback]
     public void OnPrimaryAttack(InputAction.CallbackContext context)
     {
-        if (!isLocalPlayer) return;
+        if (!hasAuthority) return;
 
         if (context.performed)
         {
-            animator.SetTrigger("shootTrigger");
             playerWeaponSystem.PrimaryPerformed();
         }
         else if (context.canceled)
@@ -101,7 +100,7 @@ public class PlayerController : EntityController
     [ClientCallback]
     private void Update()
     {
-        if (!isLocalPlayer || !NetworkClient.ready) return;
+        if (!hasAuthority || !NetworkClient.ready) return;
 
         Aim();
     }
