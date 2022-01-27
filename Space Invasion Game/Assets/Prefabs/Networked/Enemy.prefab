@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6914757095847197656}
   - component: {fileID: 6914757095847197662}
   - component: {fileID: 6914757095847197655}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  hostility: 1
   maxHP: 1
   _currentHP: 0
 --- !u!114 &6914757095847197655

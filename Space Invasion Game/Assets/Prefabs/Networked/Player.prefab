@@ -91,7 +91,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9138634387556622230}
-  m_Layer: 7
+  - component: {fileID: 6063305726403975132}
+  m_Layer: 0
   m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4898767284618445689}
   - component: {fileID: 2417027905053215136}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,8 +349,7 @@ GameObject:
   - component: {fileID: 7951272049336202500}
   - component: {fileID: 3822663126351197365}
   - component: {fileID: -1871040489349909815}
-  - component: {fileID: 4972542131892166136}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,22 +557,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ec7c380a-4c6d-4fce-bc2f-af222dc67f5c
     m_ActionName: PlayerMap/Aim[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -1871040489349909815}
-        m_TargetAssemblyTypeName: PlayerWeaponSystem, Assembly-CSharp
-        m_MethodName: WeaponSelection
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 8766d89d-6775-4810-86f7-965e0a38a77c
-    m_ActionName: PlayerMap/Hotkeys[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMap
@@ -647,7 +631,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  hostility: 0
   maxHP: 10
   _currentHP: 0
 --- !u!1 &8770114581583419512
@@ -672,22 +655,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7951272049336202496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34aad6e1855632349bad4e91a6c4bb6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  AmmoCounts:
-  - ammoType: 0
-    count: 200
-  - ammoType: 1
-    count: 20
-  - ammoType: 2
-    count: 20
-  - ammoType: 3
-    count: 100
-  - ammoType: 4
-    count: 200
+  m_GameObject: {fileID: 8770114581583419512}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6779433567473647512}
+  - {fileID: 9138634387556622230}
+  - {fileID: 8651848769380980833}
+  m_Father: {fileID: 7951272049336202499}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
