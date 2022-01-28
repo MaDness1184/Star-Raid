@@ -661,7 +661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  moveSpeed: 5
+  moveSpeed: 8
   arm: {fileID: 9138634387556622230}
   hand: {fileID: 4898767284618445689}
   bulletVFX: {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}

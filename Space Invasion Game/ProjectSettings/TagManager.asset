@@ -50,6 +50,9 @@ TagManager:
   - name: Player
     uniqueID: 1359686127
     locked: 0
+  - name: Enemy
+    uniqueID: 461570731
+    locked: 0
   - name: Underpass
     uniqueID: 4057608721
     locked: 0
