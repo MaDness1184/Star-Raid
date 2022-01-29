@@ -219,7 +219,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  maxHP: 2
   hostility: 1
+  deathVfxs:
+  - {fileID: 1245866112023556840, guid: cec1feedcc5b0e9459d6d85556a2e406, type: 3}
   internalCurrentHP: 0
 --- !u!114 &6914757095847197655
 MonoBehaviour:

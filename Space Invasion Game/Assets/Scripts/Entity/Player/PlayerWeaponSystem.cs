@@ -178,7 +178,7 @@ public class PlayerWeaponSystem : NetworkBehaviour
                         if (hitHostility == HostilityType.Hostile || hitHostility == HostilityType.Neutral)
                         {
                             hitPointCache = hit.point;
-                            entityStatus.CmdDealDamage(currentWeapon.damage);
+                            entityStatus.CmdDealDamage(currentWeapon.damage, netIdentity);
                             if (currentWeapon.ammoType != AmmoType.Penetration)
                                 break; // TODO: Find a way to get max raycast point for VFX purpose
                         }

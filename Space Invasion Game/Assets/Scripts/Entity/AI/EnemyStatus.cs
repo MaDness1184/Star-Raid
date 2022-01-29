@@ -10,18 +10,19 @@ public class EnemyStatus : EntityStatus
     {
         if (isServer)
         {
-            internalCurrentHP = maxHP;
+            internalCurrentHP = GetMaxHP();
             Hive.instance.NotifyEnemySpawn();
         }  
     }
 
     [Server]
-    protected override void DealDamage(int damage)
+    protected override void DealDamage(int damage, NetworkIdentity dealerIdentity)
     {
 
         if (internalCurrentHP <= 0)
         {
-            Hive.instance.NotifyEnemyDeSpawn();
+            Hive.instance.NotifyEnemyDeSpawn(dealerIdentity);
+            //RPCSpawnDeathVFXs();
             NetworkServer.Destroy(gameObject);
         }
         else

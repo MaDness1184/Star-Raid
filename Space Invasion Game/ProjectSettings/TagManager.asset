@@ -44,6 +44,9 @@ TagManager:
   - name: Ground
     uniqueID: 3275631153
     locked: 0
+  - name: Ground VFX
+    uniqueID: 4000436743
+    locked: 0
   - name: Collisions
     uniqueID: 4132298097
     locked: 0

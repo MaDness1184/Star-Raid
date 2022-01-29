@@ -5,19 +5,16 @@ using UnityEngine;
 
 public class GameNetworkManager : NetworkManager
 {
-    [SerializeField] private static List<Transform> players = new List<Transform>(); // Can only be read on Server
-    [SerializeField] private static List<PlayerStatus> playerStatuses = new List<PlayerStatus>();
+    [SerializeField] public static readonly List<NetworkIdentity> playerIdentities = new List<NetworkIdentity>(); // Can only be read on Server
     
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         base.OnServerAddPlayer(conn);
 
-        GameObject player = conn.identity.gameObject;
-        players.Add(player.transform);
+        playerIdentities.Add(conn.identity);
+        Hive.instance.AddNewPlayer(conn.identity);
 
-        PlayerStatus playerStatus = player.GetComponent<PlayerStatus>();
-        playerStatuses.Add(playerStatus);
-
+        PlayerStatus playerStatus = conn.identity.GetComponent<PlayerStatus>();
         if (numPlayers == 1)
             playerStatus.ChangePlayerName($"Host");
         else
@@ -25,4 +22,6 @@ public class GameNetworkManager : NetworkManager
 
         //DebugUI.log.ShowConsole(false);
     }
+
+    //TODO: Add event that notify all subscriber a new player has joined
 }

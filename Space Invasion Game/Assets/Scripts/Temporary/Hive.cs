@@ -1,6 +1,7 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Hive : NetworkBehaviour
@@ -15,8 +16,10 @@ public class Hive : NetworkBehaviour
     [SerializeField] GameObject enemy;
 
     [Header("Debugs")]
-    [SerializeField] private int population;
+    [SerializeField] private int population; //TODO: Add real population control using Enum
     [SerializeField] private Transform target;
+
+    private Dictionary<NetworkIdentity, int> playerAggros = new Dictionary<NetworkIdentity, int>();
 
     private float nextSpawn;
 
@@ -28,6 +31,16 @@ public class Hive : NetworkBehaviour
             Destroy(instance);
     }
 
+    [Server]
+    public void AddNewPlayer(NetworkIdentity identity)
+    {
+        if (playerAggros.ContainsKey(identity)) return;
+
+        playerAggros.Add(identity, Random.Range(0, 1));
+
+        UpdateAggroTarget();
+    }
+
     [ServerCallback]
     // Update is called once per frame
     void Update()
@@ -36,7 +49,9 @@ public class Hive : NetworkBehaviour
         {
             nextSpawn += spawnCdr;
             GameObject enemyGO = Instantiate(enemy) as GameObject;
-            enemyGO.transform.SetParent(transform); // Put the enemy under the hive
+            //Can't put enemy under the hive because nested Network Idendity is not allowed
+            //Check this one out https://mirror-networking.gitbook.io/docs/components/network-identity
+            //enemyGO.transform.SetParent(transform); // Put the enemy under the hive
             NetworkServer.Spawn(enemyGO);
         }
     }
@@ -48,9 +63,29 @@ public class Hive : NetworkBehaviour
     }
 
     [Server]
-    public void NotifyEnemyDeSpawn()
+    public void NotifyEnemyDeSpawn(NetworkIdentity dealerIdentity)
     {
+        if(playerAggros.ContainsKey(dealerIdentity))
+            playerAggros[dealerIdentity]++;
+
+        //Debug.Log(dealerIdentity.name + " aggo = " + playerAggros[dealerIdentity]);
+
+        UpdateAggroTarget();
+
         population--;
+    }
+
+    [Server]
+    private void UpdateAggroTarget()
+    {
+        target = playerAggros.Aggregate((x, y) => x.Value > y.Value ? x : y).Key.transform;
+        //Debug.Log("Aggro = " + target);
+    }
+
+    [Server]
+    public void PullAggroToTarget(NetworkIdentity identity)
+    {
+        playerAggros[identity] *= 2;
     }
 
     [Server]

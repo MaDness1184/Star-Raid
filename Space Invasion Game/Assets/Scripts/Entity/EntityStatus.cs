@@ -6,8 +6,9 @@ using UnityEngine;
 public class EntityStatus : NetworkBehaviour
 {
     [Header("Entity Settings")]
-    [SerializeField] protected readonly int maxHP = 10;
+    [SerializeField] private int maxHP = 10;
     [SerializeField] private HostilityType hostility;
+    [SerializeField] protected GameObject[] deathVfxs;
 
     [Header("Entity Debug")]
     [SyncVar(hook = nameof(HandleHPChange))]
@@ -19,13 +20,16 @@ public class EntityStatus : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdDealDamage(int damage) 
+    public void CmdDealDamage(int damage, NetworkIdentity dealerIdentity) 
     {
-        DealDamage(damage);
+        //TODO: Pool enemy for less bug
+        //Current bug: enemy is destroyed before all pellet of shotgun can finish dealing damage
+        // leading to object not found for command
+        DealDamage(damage, dealerIdentity);
     }
 
     [Server]
-    protected virtual void DealDamage(int damage)
+    protected virtual void DealDamage(int damage, NetworkIdentity dealerIdentity)
     {
 
     }
@@ -39,4 +43,27 @@ public class EntityStatus : NetworkBehaviour
     {
         return hostility;
     }
+
+    protected int GetMaxHP()
+    {
+        return maxHP;
+    }
+
+    public override void OnStopClient()
+    {
+        foreach (GameObject vfxGO in deathVfxs)
+        {
+            GameObject go = Instantiate(vfxGO, transform.position, Quaternion.identity);
+        }
+    }
+
+    /*[ClientRpc]
+    protected void RPCSpawnDeathVFXs()
+    {
+        foreach (GameObject vfxGO in deathVfxs)
+        {
+            GameObject go = Instantiate(vfxGO, transform.position, Quaternion.identity);
+        }  
+    }*/
 }
+

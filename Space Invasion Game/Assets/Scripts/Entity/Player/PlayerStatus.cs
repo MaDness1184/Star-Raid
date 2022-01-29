@@ -48,14 +48,14 @@ public class PlayerStatus : EntityStatus
     void Start()
     {
         if (isServer)
-            internalCurrentHP = maxHP;
+            internalCurrentHP = GetMaxHP();
 
         if (isLocalPlayer)
             Camera.main.GetComponent<CinemachineVirtualCamera>().Follow = gameObject.transform; 
     }
 
     [Server]
-    protected override void DealDamage(int damage)
+    protected override void DealDamage(int damage, NetworkIdentity dealerIdentity)
     {
         if(internalCurrentHP <= 0)
         {
