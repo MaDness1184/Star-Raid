@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Hive : NetworkBehaviour
+public class GameManager : NetworkBehaviour
 {
-    static public Hive instance;
+    static public GameManager instance;
 
     [Header("Setting")]
     [SerializeField] private int spawnLimit = 10;
@@ -45,7 +45,7 @@ public class Hive : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Time.time > nextSpawn && population <= spawnLimit)
+        if(Time.time > nextSpawn && population < spawnLimit)
         {
             nextSpawn += spawnCdr;
             GameObject enemyGO = Instantiate(enemy) as GameObject;
@@ -87,6 +87,13 @@ public class Hive : NetworkBehaviour
     {
         playerAggros[identity] *= 2;
     }
+
+    [Server]
+    public void NotifyPlayerDown(NetworkIdentity identity)
+    {
+
+    }
+
 
     [Server]
     public Transform GetTarget()

@@ -20,19 +20,36 @@ public class EntityStatus : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdDealDamage(int damage, NetworkIdentity dealerIdentity) 
+    public void CmdDealDamage(int damage, NetworkIdentity perpetratorIdentity) 
     {
         //TODO: Pool enemy for less bug
         //Current bug: enemy is destroyed before all pellet of shotgun can finish dealing damage
         // leading to object not found for command
-        DealDamage(damage, dealerIdentity);
+        DealDamage(damage, perpetratorIdentity);
     }
 
     [Server]
-    protected virtual void DealDamage(int damage, NetworkIdentity dealerIdentity)
+    protected virtual void DealDamage(int damage, NetworkIdentity perpetratorIdentity)
     {
 
     }
+
+    /*[Command(requiresAuthority = false)]
+    public void CmdKnockBack(float force, Vector3 source)
+    {
+        RpcKnockBack(force, source);
+    }
+
+    [ClientRpc]
+    protected virtual void RpcKnockBack(float force, Vector3 source)
+    {
+        if (!hasAuthority) return;
+
+        Debug.Log("Knocking back entity");
+
+        Vector3 direction = source - transform.position;
+        GetComponent<Rigidbody2D>().AddForce(direction * force);
+    }*/
 
     public int GetCurrentHP()
     {

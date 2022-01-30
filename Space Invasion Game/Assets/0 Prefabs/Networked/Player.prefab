@@ -69,7 +69,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1359686127
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -358088825659238604, guid: d4e5842007596074799ab194b92535d7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -182,7 +182,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1359686127
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -264,7 +264,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1359686127
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 3
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -346,7 +346,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1359686127
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 1141107523470948417}
   - component: {fileID: 7951272049336202497}
   - component: {fileID: 7951272049336202501}
-  - component: {fileID: 7684498826280063222}
+  - component: {fileID: 9134539440053199157}
   - component: {fileID: 7951272049336202500}
   - component: {fileID: 3822663126351197365}
   - component: {fileID: 2507997489485277239}
@@ -622,7 +622,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 3
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -631,8 +631,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &7684498826280063222
-CircleCollider2D:
+--- !u!70 &9134539440053199157
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -644,9 +644,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.020080209, y: -0.03873825}
-  serializedVersion: 2
-  m_Radius: 0.85588443
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 1.5}
+  m_Direction: 0
 --- !u!114 &7951272049336202500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,7 +684,50 @@ MonoBehaviour:
   deathVfxs:
   - {fileID: 1245866112023556840, guid: cec1feedcc5b0e9459d6d85556a2e406, type: 3}
   internalCurrentHP: 0
-  playerName: Uninitialized
+  godMode: 0
+  vulnerableMode: 0
+  respawnDuration: 5
+  iframeDuration: 0.5
+  baseKnockbackForce: 500
+  knockbackStunDuration: 0.2
+  OnPlayerStunned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7951272049336202500}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: SetControllable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnPlayerUnStunned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7951272049336202500}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: SetControllable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnPlayerDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerRespawn:
+    m_PersistentCalls:
+      m_Calls: []
+  internalIsStunned: 0
+  _isInvincible: 0
 --- !u!114 &2507997489485277239
 MonoBehaviour:
   m_ObjectHideFlags: 0

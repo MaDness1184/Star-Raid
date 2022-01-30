@@ -8,12 +8,14 @@ using UnityEngine.InputSystem;
 public class PlayerController : EntityController
 {
     [Header("Settings")]
-    [SerializeField ]private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 5f;
 
     [Header("Required Components")]
     [SerializeField] private Transform arm;
     [SerializeField] private Transform hand;
     [SerializeField] private GameObject bulletVFX;
+
+    private bool controllable = true;
 
     Rigidbody2D rb2D;
     Animator animator;
@@ -33,12 +35,28 @@ public class PlayerController : EntityController
         inputActions = playerInput.actions["aim"];
     }
 
+    [ClientCallback]
+    private void Update()
+    {
+        if (!hasAuthority || !controllable || !NetworkClient.ready) return;
+
+        Aim();
+    }
+
+    [ClientCallback]
+    private void FixedUpdate()
+    {
+        if (!hasAuthority || !controllable || !NetworkClient.ready) return;
+
+        rb2D.MovePosition(rb2D.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
     #region Movement
 
     [ClientCallback]
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (!hasAuthority) return;
+        if (!hasAuthority || !controllable) return;
 
         if (context.performed)
         {
@@ -82,7 +100,7 @@ public class PlayerController : EntityController
     [ClientCallback]
     public void OnPrimaryAttack(InputAction.CallbackContext context)
     {
-        if (!hasAuthority) return;
+        if (!hasAuthority || !controllable) return;
 
         if (context.performed)
         {
@@ -97,17 +115,21 @@ public class PlayerController : EntityController
 
     #endregion
 
-    [ClientCallback]
-    private void Update()
-    {
-        if (!hasAuthority || !NetworkClient.ready) return;
+    #region Controllable
 
-        Aim();
+    [Server]
+    public void SetControllable(bool controllable)
+    {
+        RpcSetControllable(controllable);
     }
 
-    [ClientCallback]
-    private void FixedUpdate()
+    [ClientRpc]
+    private void RpcSetControllable(bool controllable)
     {
-        rb2D.MovePosition(rb2D.position + movement * moveSpeed * Time.fixedDeltaTime);
+        if (!hasAuthority) return;
+
+        this.controllable = controllable;
     }
+
+    #endregion
 }
