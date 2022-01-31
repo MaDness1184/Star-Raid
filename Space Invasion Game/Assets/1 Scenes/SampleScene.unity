@@ -5541,7 +5541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  spawnLimit: 0
+  spawnLimit: 10
   spawnCdr: 0.5
   enemy: {fileID: 6914757095847197663, guid: ced820c0492b8c64ebc766045f2e6c6b, type: 3}
   population: 0
