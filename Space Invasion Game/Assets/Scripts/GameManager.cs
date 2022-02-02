@@ -3,14 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : NetworkBehaviour
 {
     static public GameManager instance;
 
     [Header("Setting")]
+    [SerializeField] private bool canSpawn = true;
     [SerializeField] private int spawnLimit = 10;
     [SerializeField] private float spawnCdr = 0.5f;
+    [SerializeField] private float spawnDelay = 5f;
 
     [Header("Required Components")]
     [SerializeField] GameObject enemy;
@@ -18,6 +21,9 @@ public class GameManager : NetworkBehaviour
     [Header("Debugs")]
     [SerializeField] private int population; //TODO: Add real population control using Enum
     [SerializeField] private Transform target;
+
+    //private List<Vector3> enemySpawnPoints = new List<Vector3>();
+    [SerializeField] private Transform[] enemySpawnPoints;
 
     private Dictionary<NetworkIdentity, int> playerAggros = new Dictionary<NetworkIdentity, int>();
 
@@ -31,29 +37,34 @@ public class GameManager : NetworkBehaviour
             Destroy(instance);
     }
 
-    [Server]
-    public void AddNewPlayer(NetworkIdentity identity)
+    private void Start()
     {
-        if (playerAggros.ContainsKey(identity)) return;
-
-        playerAggros.Add(identity, Random.Range(0, 1));
-
-        UpdateAggroTarget();
+        nextSpawn = Time.time + spawnDelay;
     }
 
     [ServerCallback]
     // Update is called once per frame
     void Update()
     {
+        if (!canSpawn) return;
+
         if(Time.time > nextSpawn && population < spawnLimit)
         {
-            nextSpawn += spawnCdr;
-            GameObject enemyGO = Instantiate(enemy) as GameObject;
+            nextSpawn = Time.time + spawnCdr;
+            GameObject enemyGO = Instantiate(enemy,
+                enemySpawnPoints[Random.Range(0,enemySpawnPoints.Length)].position,
+                Quaternion.identity);
             //Can't put enemy under the hive because nested Network Idendity is not allowed
             //Check this one out https://mirror-networking.gitbook.io/docs/components/network-identity
             //enemyGO.transform.SetParent(transform); // Put the enemy under the hive
             NetworkServer.Spawn(enemyGO);
         }
+    }
+
+    #region Enemy Spawn
+    public void RegisterEnemySpawnPoint(Vector3 position)
+    {
+        //enemySpawnPoints.Add(position);
     }
 
     [Server]
@@ -75,6 +86,8 @@ public class GameManager : NetworkBehaviour
         population--;
     }
 
+    #endregion
+
     [Server]
     private void UpdateAggroTarget()
     {
@@ -91,13 +104,39 @@ public class GameManager : NetworkBehaviour
     [Server]
     public void NotifyPlayerDown(NetworkIdentity identity)
     {
-
+        playerAggros[identity] = 1;
+        UpdateAggroTarget();
     }
 
+    [Server]
+    public void OnNewPlayerAdded(NetworkIdentity identity)
+    {
+        if (playerAggros.ContainsKey(identity)) return;
+
+        playerAggros.Add(identity, Random.Range(0, 1));
+
+        UpdateAggroTarget();
+    }
 
     [Server]
     public Transform GetTarget()
     {
         return target;
     }
+
+    #region Context Menu
+
+    [Server]
+    public void EnableEnemySpawn( bool enable)
+    {
+        canSpawn = enable;
+    }
+
+    [Server]
+    public void SetSpawnLimit(int limit)
+    {
+        spawnLimit = limit;
+    }
+
+    #endregion
 }

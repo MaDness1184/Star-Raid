@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6604186795614031350}
   - component: {fileID: 6604186795614031351}
   - component: {fileID: 6170239416006413916}
-  - component: {fileID: 6604186795614031344}
   - component: {fileID: 2443788388213082793}
-  m_Layer: 4
+  - component: {fileID: 6604186795614031344}
+  m_Layer: 31
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -110,7 +110,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1}
+  m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
 --- !u!50 &6170239416006413916
 Rigidbody2D:
@@ -129,24 +129,10 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &6604186795614031344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6604186795614031345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d52658a8f88cf3e4d9d0030a17118cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3000
-  destroyTime: 5
 --- !u!114 &2443788388213082793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,3 +174,16 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &6604186795614031344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604186795614031345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d52658a8f88cf3e4d9d0030a17118cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3000

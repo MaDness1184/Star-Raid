@@ -8,11 +8,13 @@ public class ProjectileWeapon : ScriptableObject
     public bool automatic;
     public AmmoType ammoType;
     public int damage;
+    public float range;
     public float spread;
     public float reloadTime;
     public int magazineSize;
     public int pelletPerShot;
     public float primaryCdr;
     public float secondaryCdr;
-    public GameObject[] projectileVfxs;
+    public GameObject sparkProjectileVfx;
+    public GameObject nonSparkProjectileVfx;
 }

@@ -10,19 +10,21 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [SerializeField] private Transform arm;
     [SerializeField] private Transform hand;
     [SerializeField] private Transform projectileParent;
+    [SerializeField] private LayerMask projectileBlockLayer;
+    [SerializeField] private GameObject normalBulletParticle;
     [SerializeField] private ProjectileWeapon[] projectileWeapons;
-    [Header("Required Components")]
 
     [Header("Debugs")]
-    [SerializeField][SyncVar] 
+    [SerializeField] [SyncVar]
     private int currentWeaponIndex;
     private ProjectileWeapon currentWeapon;
     private PlayerInventory playerInventory;
     private Animator animator;
 
-    private bool canShootAgain;
+    private bool spraying;
     private float nextPrimaryShootable;
     private bool reloading;
+    private bool controllable = true;
 
     private readonly SyncList<int> currentAmmoCounts = new SyncList<int>();
 
@@ -36,28 +38,42 @@ public class PlayerWeaponSystem : NetworkBehaviour
 
         if (!isServer) return;
 
-        for(int i  = 0; i < projectileWeapons.Length; i++)
+        for (int i = 0; i < projectileWeapons.Length; i++)
         {
             currentAmmoCounts.Add(projectileWeapons[i].magazineSize);
         }
     }
+
+    [ClientCallback]
+    private void Update()
+    {
+        if (!hasAuthority) return;
+
+        if (!NetworkClient.ready || currentAmmoCounts.Count <= 0) return;
+
+        PlayerUI.instance.updateText(currentWeapon.name + " "
+            + currentAmmoCounts[currentWeaponIndex]
+            + "/" + currentWeapon.magazineSize
+            + "\n" + playerInventory.AmmoCountToString());
+    }
+
     #region Weapon Selection
 
     [ClientCallback]
-    public void WeaponSelection (InputAction.CallbackContext context)
+    public void WeaponSelection(InputAction.CallbackContext context)
     {
         if (!hasAuthority) return;
 
         if (context.performed)
         {
             int hotkeyNum = int.Parse(context.control.name) - 1;
-            if(hotkeyNum < projectileWeapons.Length)
+            if (hotkeyNum < projectileWeapons.Length)
             {
                 CmdSwitchWeapon(hotkeyNum);
 
                 currentWeaponIndex = hotkeyNum;
                 currentWeapon = projectileWeapons[hotkeyNum];
-                if (currentWeapon.automatic) canShootAgain = true;
+                spraying = false;
             }
 
             reloading = false;
@@ -91,7 +107,7 @@ public class PlayerWeaponSystem : NetworkBehaviour
         }
     }
 
-    [Command] 
+    [Command]
     private void CmdSpendAmmo()
     {
         currentAmmoCounts[currentWeaponIndex]--;
@@ -100,11 +116,11 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [Client]
     public void PrimaryPerformed()
     {
-        if (!PrimaryAmmoCheck()) return;
-
-        canShootAgain = false;
+        if (!PrimaryAmmoCheck() || !controllable) return;
+        
         if (currentWeapon.automatic)
         {
+            spraying = true;
             StartCoroutine(AutomaticShoot());
         }
         else
@@ -119,7 +135,7 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [Client]
     public void PrimaryReleased()
     {
-        canShootAgain = true;
+        spraying = false;
     }
 
     #endregion
@@ -150,7 +166,7 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [Client]
     IEnumerator AutomaticShoot()
     {
-        while (!canShootAgain && PrimaryAmmoCheck())
+        while (spraying && PrimaryAmmoCheck())
         {
             ShootProjectiles();
             yield return new WaitForSeconds(currentWeapon.primaryCdr);
@@ -162,40 +178,59 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [Client]
     private void ShootProjectiles()
     {
-        for(int i = 0; i < currentWeapon.pelletPerShot; i++)
-        {
-            Quaternion spreadRot = Quaternion.Euler(0, 0, Random.Range(-currentWeapon.spread, currentWeapon.spread));
-            RaycastHit2D[] hitArray = Physics2D.RaycastAll(hand.position, spreadRot * hand.right, 30f);
-
-            if (hitArray.Length > 0)
-            {
-                //BulletTrailVfx(hit.point);
-                foreach (RaycastHit2D hit in hitArray)
-                {
-                    if (hit.collider.TryGetComponent<EntityStatus>(out EntityStatus entityStatus))
-                    {
-                        HostilityType hitHostility = entityStatus.GetHostility();
-                        if (hitHostility == HostilityType.Hostile || hitHostility == HostilityType.Neutral)
-                        {
-                            hitPointCache = hit.point;
-                            entityStatus.CmdDealDamage(currentWeapon.damage, netIdentity);
-                            if (currentWeapon.ammoType != AmmoType.Penetration)
-                                break; // TODO: Find a way to get max raycast point for VFX purpose
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //BulletTrailVfx(transform.position + transform.right * maxRange);
-            }
-
-            CmdBulletVFX(spreadRot);
-        }
+        if (!controllable) return;
 
         // Character VFX
         animator.SetTrigger("shootTrigger");
         // TODO: gun sound here
+
+        for (int i = 0; i < currentWeapon.pelletPerShot; i++)
+        {
+            Quaternion spreadRot = Quaternion.Euler(0, 0, Random.Range(-currentWeapon.spread,
+                currentWeapon.spread));
+
+            hitPointCache = Physics2D.Raycast(hand.position, spreadRot * hand.right).point;
+            //CmdBulletVFX(spreadRot);
+
+            /*if (Physics2D.Raycast(hand.position, spreadRot * hand.right, currentWeapon.range,
+                projectileBlockLayer))
+                continue;*/
+
+            RaycastHit2D[] hitArray = Physics2D.RaycastAll(hand.position, spreadRot * hand.right,
+                currentWeapon.range);
+
+            if (hitArray.Length <= 0)
+            {
+                CmdBulletVFX(spreadRot, VfxType.Spark); // hit nothing in range
+                continue;
+            }
+                    
+
+            foreach (RaycastHit2D hit in hitArray)
+            {
+                //TODO: find a way to block walls
+
+                if (hit.collider.TryGetComponent<EntityStatus>(out EntityStatus entityStatus))
+                {
+                    HostilityType hitHostility = entityStatus.GetHostility();
+                    if (hitHostility == HostilityType.Hostile ||
+                        hitHostility == HostilityType.Neutral)
+                    {
+                        CmdBulletVFX(spreadRot, VfxType.NoneSpark);
+
+                        hitPointCache = hit.point;
+                        entityStatus.CmdDealDamage(currentWeapon.damage, netIdentity);
+                        if (currentWeapon.ammoType != AmmoType.Penetration)
+                            break; // TODO: Find a way to get max raycast point for VFX purpose
+                    }
+                }
+                else
+                {
+                    CmdBulletVFX(spreadRot, VfxType.Spark);
+                    break; // player hit a wall before hitting an enemy
+                }
+            }
+        }
     }
 
     #endregion
@@ -203,33 +238,36 @@ public class PlayerWeaponSystem : NetworkBehaviour
     #region Bullet VFX
 
     [Command]
-    private void CmdBulletVFX(Quaternion spreadRot)
+    private void CmdBulletVFX(Quaternion spreadRot, VfxType vfxType)
     {
-        RpcBulletVFX(spreadRot);
+        RpcBulletVFX(spreadRot, vfxType);
     }
 
     [ClientRpc]
-    private void RpcBulletVFX(Quaternion spreadRot)
+    private void RpcBulletVFX(Quaternion spreadRot, VfxType vfxType)
     {
-        GameObject bullet = Instantiate(currentWeapon.projectileVfxs[0], hand.position, arm.rotation * spreadRot) as GameObject;
-        bullet.transform.SetParent(projectileParent); // bullet set under Projectile parent in hierarchy
+        GameObject vfx = currentWeapon.sparkProjectileVfx;
+        if(vfxType == VfxType.NoneSpark)
+            vfx = currentWeapon.nonSparkProjectileVfx;
+
+        GameObject bullet = Instantiate(vfx, hand.position, arm.rotation * spreadRot);
+
+        ParticleSystem bulletPS = bullet.GetComponent<ParticleSystem>();
+        var main = bulletPS.main;
+
+        var velocity = bulletPS.velocityOverLifetime;
+        //Debug.Log((currentWeapon.range) / velocity.x.constant);
+
+        main.startLifetime = (currentWeapon.range + 1) / velocity.x.constant;
     }
 
     #endregion
 
-    [ClientCallback]
-    private void Update()
+    public void SetControllable(bool controllable)
     {
-        if (!hasAuthority) return;
-
-        if (!NetworkClient.ready || currentAmmoCounts.Count <= 0) return;
-
-        PlayerUI.instance.updateText(currentWeapon.name + " "
-            + currentAmmoCounts[currentWeaponIndex]
-            + "/" + currentWeapon.magazineSize
-            + "\n" + playerInventory.AmmoCountToString());
+        this.controllable = controllable;
+        spraying = false;
     }
-
 
     private void OnDrawGizmos()
     {
@@ -239,4 +277,16 @@ public class PlayerWeaponSystem : NetworkBehaviour
             Gizmos.DrawLine(hand.position, hitPointCache);
         }
     }
+
+    private enum VfxType
+    {
+        NoneSpark,
+        Spark
+    }
 }
+
+
+
+
+
+

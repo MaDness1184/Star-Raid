@@ -8,6 +8,7 @@ public class EntityStatus : NetworkBehaviour
     [Header("Entity Settings")]
     [SerializeField] private int maxHP = 10;
     [SerializeField] private HostilityType hostility;
+    [SerializeField] private ParticleSystem onDamagedParticle;
     [SerializeField] protected GameObject[] deathVfxs;
 
     [Header("Entity Debug")]
@@ -72,6 +73,18 @@ public class EntityStatus : NetworkBehaviour
         {
             GameObject go = Instantiate(vfxGO, transform.position, Quaternion.identity);
         }
+    }
+
+    [Server]
+    protected void PlayOnDamagedParticle()
+    {
+        RpcPlayOnDamagedParticle();
+    }
+
+    [ClientRpc]
+    private void RpcPlayOnDamagedParticle()
+    {
+        onDamagedParticle.Play();
     }
 
     /*[ClientRpc]

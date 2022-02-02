@@ -41,6 +41,8 @@ public class PlayerStatus : EntityStatus
         get { return _isInvincible; }
     }
 
+    private bool respawning;
+
     private Rigidbody2D rb2D;
     private SpriteRenderer[] spriteRenderers;
 
@@ -53,22 +55,30 @@ public class PlayerStatus : EntityStatus
         if (isServer)
             internalCurrentHP = GetMaxHP();
 
-        if (isLocalPlayer)
-            Camera.main.GetComponent<CinemachineVirtualCamera>().Follow = gameObject.transform; 
+        if (!isLocalPlayer) return;
+
+        Camera.main.GetComponent<CinemachineVirtualCamera>().Follow = gameObject.transform;
+        DebugConsole.main.SetPlayer(this);
     }
 
     [Server]
     protected override void DealDamage(int damage, NetworkIdentity perpetratorIdentity)
     {
         if (vulnerableMode) damage = GetMaxHP();
-        if (!godMode) internalCurrentHP -= damage;
+        if (!godMode)
+        {
+            PlayOnDamagedParticle();
+            internalCurrentHP -= damage;
+            DebugConsole.Log($"{name} took {damage}");
+        }
 
         StartCoroutine(Invincible(iframeDuration));
 
         if (internalCurrentHP <= 0)
         {
             Debug.Log(gameObject.name + " died");
-            OnDeath();
+            if (!respawning)
+                OnDeath();
         }
         else
         {
@@ -79,6 +89,11 @@ public class PlayerStatus : EntityStatus
     [Server]
     private void OnDeath()
     {
+        foreach (GameObject vfxGO in deathVfxs)
+        {
+            GameObject go = Instantiate(vfxGO, transform.position, Quaternion.identity);
+        }
+
         Stun(true);
         EnablePlayer(false);
 
@@ -90,7 +105,10 @@ public class PlayerStatus : EntityStatus
     [Server]
     private IEnumerator Respawning()
     {
+        respawning = true;
         yield return new WaitForSeconds(respawnDuration);
+        respawning = false;
+
         OnRespawn();
     }
 
@@ -112,7 +130,7 @@ public class PlayerStatus : EntityStatus
         if (hasAuthority && rb2D.bodyType != RigidbodyType2D.Static) 
             rb2D.velocity = Vector3.zero;
 
-        rb2D.bodyType = enable ? RigidbodyType2D.Dynamic : RigidbodyType2D.Static;
+        rb2D.simulated = enable;
         foreach (SpriteRenderer spriteRenderer in spriteRenderers)
             spriteRenderer.color = enable ? Color.white : Color.clear;
     }
@@ -128,11 +146,11 @@ public class PlayerStatus : EntityStatus
     #region Stunned
 
     [Server]
-    private void Stun(bool active)
+    public void Stun(bool stun)
     {
-        internalIsStunned = active;
+        internalIsStunned = stun;
 
-        if (active)
+        if (stun)
         {
             OnPlayerStunned?.Invoke();
         }
@@ -209,5 +227,17 @@ public class PlayerStatus : EntityStatus
         if (!hasAuthority) return;
 
         transform.position = destination;
+    }
+
+    [Server]
+    public void EnableGodMode(bool enable)
+    {
+        godMode = enable;
+    }
+
+    [Server]
+    public void EnableVulnerableMode(bool enable)
+    {
+        vulnerableMode = enable;
     }
 }

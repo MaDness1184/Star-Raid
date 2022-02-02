@@ -17,11 +17,12 @@ MonoBehaviour:
   automatic: 0
   ammoType: 0
   damage: 2
-  spread: 5
+  range: 12
+  spread: 2
   reloadTime: 0.5
   magazineSize: 15
   pelletPerShot: 1
-  primaryCdr: 0.3
+  primaryCdr: 0.1
   secondaryCdr: 0
-  projectileVfxs:
-  - {fileID: 6604186795614031345, guid: e1ae62935e7c89b4c808edd40da5b208, type: 3}
+  sparkProjectileVfx: {fileID: 6105200367783145074, guid: 03752f3ee89ac064f9d77b1749df2fa8, type: 3}
+  nonSparkProjectileVfx: {fileID: 4854996513254171748, guid: 4fe21157cd90c574aabccff7d0e2cd95, type: 3}

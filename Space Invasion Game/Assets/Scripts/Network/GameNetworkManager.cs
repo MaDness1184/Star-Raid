@@ -12,7 +12,7 @@ public class GameNetworkManager : NetworkManager
         base.OnServerAddPlayer(conn);
 
         playerIdentities.Add(conn.identity);
-        GameManager.instance.AddNewPlayer(conn.identity);
+        GameManager.instance.OnNewPlayerAdded(conn.identity);
 
         PlayerStatus playerStatus = conn.identity.GetComponent<PlayerStatus>();
         if (numPlayers == 1)

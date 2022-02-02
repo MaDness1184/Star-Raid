@@ -6,7 +6,8 @@ using UnityEngine;
 public class EnemyStatus : EntityStatus
 {
     [Header("Enemy Settings")]
-    [SerializeField]private float baseKnockbackForce = 300f;
+    [SerializeField] private bool dummy = false;
+    [SerializeField] private float baseKnockbackForce = 300f;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,9 @@ public class EnemyStatus : EntityStatus
     [Server]
     protected override void DealDamage(int damage, NetworkIdentity perpetratorIdentity)
     {
+        PlayOnDamagedParticle();
+        if (dummy) return;
+
         internalCurrentHP -= damage;
 
         if (internalCurrentHP <= 0)

@@ -7,6 +7,7 @@ using UnityEngine;
 public class EnemyController : EntityController
 {
     [Header("Physic Setting")]
+    [SerializeField] private bool dummy = false;
     [SerializeField] private float moveSpeed = 300;
     [SerializeField] private float movementSmoothing = 0.1f;
 
@@ -15,7 +16,7 @@ public class EnemyController : EntityController
     [SerializeField] private float attackDelayTime = 0.5f;
     //[SerializeField] private float attackCdr = 0.5f;
     [SerializeField] private float attackRecorveryTime = 1f;
-    [SerializeField] private float knockBackForce = 500f;
+    //[SerializeField] private float knockBackForce = 500f;
     [SerializeField] private GameObject attackVfx;
     [SerializeField] private GameObject attackSuccessVfx;
     //[SerializeField] private float attackRadius = 1.25f;
@@ -24,8 +25,8 @@ public class EnemyController : EntityController
     [Header("Pathfinding Setting")]
     [SerializeField] private float nextWaypointDistance = 3f;
     [SerializeField] private float pathUpdateCdr = 0.5f;
-    [SerializeField] private float obstacleScanDistance = 0.7f;
-    [SerializeField] private float playerScanCdr = 1f;
+    //[SerializeField] private float obstacleScanDistance = 0.7f;
+    //[SerializeField] private float playerScanCdr = 1f;
 
     [Header("Debugs")]
     [SerializeField] private Transform target;
@@ -39,6 +40,7 @@ public class EnemyController : EntityController
     [SerializeField] private bool attacking;
     [SerializeField] private EntityStatus targetStatus;
     private float nextAttackRecovery;
+    private float nextDelayAttack;
 
     private Seeker seeker;
     private Rigidbody2D rbody;
@@ -56,12 +58,19 @@ public class EnemyController : EntityController
     [ServerCallback]
     void Update()
     {
+        if (dummy && target != null) return;
+
         UpdatePath();
     }
 
     [ServerCallback]
     private void FixedUpdate()
     {
+        //TODO: Add target hostility check
+        Attack();
+
+        if (dummy) return;
+
         if (path != null)
         {
             if (currentWaypoint >= path.vectorPath.Count)
@@ -72,16 +81,9 @@ public class EnemyController : EntityController
 
         if (path != null && !reachedEndOfPath)
             Move();
-
-        //TODO: Add target hostility check
-        //Attack();
     }
 
-    [Server]
-    private void TargetScan()
-    {
-
-    }
+    #region Pathfinding
 
     [Server]
     private void UpdatePath()
@@ -125,6 +127,10 @@ public class EnemyController : EntityController
         }
     }
 
+    #endregion
+
+    #region Attack
+
     [ServerCallback]
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -134,7 +140,7 @@ public class EnemyController : EntityController
         {
             attacking = true;
 
-            StartCoroutine(DelayAttack());
+            nextDelayAttack = Time.time + attackDelayTime;
         }
     }
 
@@ -148,23 +154,15 @@ public class EnemyController : EntityController
     }
 
     [Server]
-    IEnumerator DelayAttack()
+    private void Attack()
     {
-        float attack = Time.time + attackDelayTime;
+        if (!attacking || Time.time < nextDelayAttack) return;
 
-        while (attacking)
-        {
-            if (Time.time >= attack)
-            {
-                // Strike
-                targetStatus.CmdDealDamage(damage, netIdentity);
-                RpcShowAttackSuccessVFX();
-                nextAttackRecovery = Time.time + attackRecorveryTime;
-
-                attacking = false;
-            }
-            yield return new WaitForFixedUpdate();
-        }
+        nextDelayAttack = Time.time + attackDelayTime + attackRecorveryTime;
+        // Strike
+        targetStatus.CmdDealDamage(damage, netIdentity);
+        RpcShowAttackSuccessVFX();
+        nextAttackRecovery = Time.time + attackRecorveryTime;
     }
 
     private void HandleAttackingChange(bool oldAttacking, bool newAttacking)
@@ -190,6 +188,8 @@ public class EnemyController : EntityController
         yield return new WaitForSeconds(0.1f);
         attackSuccessVfx.SetActive(false);
     }
+
+    #endregion
 
     #region Obsolete but might be useful code
 

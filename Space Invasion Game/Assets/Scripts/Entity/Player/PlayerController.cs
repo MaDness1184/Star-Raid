@@ -112,6 +112,24 @@ public class PlayerController : EntityController
         }
     }
 
+    [ClientCallback]
+    public void OnDebugConsole(InputAction.CallbackContext context)
+    {
+        if (!hasAuthority) return;
+
+        if (context.performed)
+            DebugConsole.main.ToggleConsole();
+    }
+
+    [ClientCallback]
+    public void OnConfirm(InputAction.CallbackContext context)
+    {
+        if (!hasAuthority) return;
+
+        if (context.performed)
+            DebugConsole.main.RunCommand();
+    }
+
 
     #endregion
 
@@ -129,6 +147,12 @@ public class PlayerController : EntityController
         if (!hasAuthority) return;
 
         this.controllable = controllable;
+        playerWeaponSystem.SetControllable(controllable);
+
+        if (controllable) return;
+
+        movement = Vector2.zero;
+        rb2D.velocity = Vector2.zero;
     }
 
     #endregion
