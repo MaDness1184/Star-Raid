@@ -9,7 +9,6 @@ public class PlayerWeaponSystem : NetworkBehaviour
     [Header("Required Components")]
     [SerializeField] private Transform arm;
     [SerializeField] private Transform hand;
-    [SerializeField] private Transform projectileParent;
     [SerializeField] private LayerMask projectileBlockLayer;
     [SerializeField] private GameObject normalBulletParticle;
     [SerializeField] private ProjectileWeapon[] projectileWeapons;
@@ -196,19 +195,25 @@ public class PlayerWeaponSystem : NetworkBehaviour
                 projectileBlockLayer))
                 continue;*/
 
-            RaycastHit2D[] hitArray = Physics2D.RaycastAll(hand.position, spreadRot * hand.right,
+            RaycastHit2D[] hits = Physics2D.RaycastAll(hand.position, spreadRot * hand.right,
                 currentWeapon.range);
 
-            if (hitArray.Length <= 0)
+            if (hits.Length <= 0)
             {
                 CmdBulletVFX(spreadRot, VfxType.Spark); // hit nothing in range
                 continue;
             }
-                    
 
-            foreach (RaycastHit2D hit in hitArray)
+            foreach (RaycastHit2D hit in hits)
             {
                 //TODO: find a way to block walls
+                //DebugConsole.Log("name = " + hit.collider.name + ", is trigger = " + hit.collider.isTrigger);
+
+                if (hit.collider.tag == "Interactive")
+                    continue;
+
+                if (hit.collider.isTrigger)
+                    continue;
 
                 if (hit.collider.TryGetComponent<EntityStatus>(out EntityStatus entityStatus))
                 {
@@ -216,7 +221,7 @@ public class PlayerWeaponSystem : NetworkBehaviour
                     if (hitHostility == HostilityType.Hostile ||
                         hitHostility == HostilityType.Neutral)
                     {
-                        CmdBulletVFX(spreadRot, VfxType.NoneSpark);
+                        CmdBulletVFX(spreadRot, VfxType.NonSpark);
 
                         hitPointCache = hit.point;
                         entityStatus.CmdDealDamage(currentWeapon.damage, netIdentity);
@@ -247,7 +252,7 @@ public class PlayerWeaponSystem : NetworkBehaviour
     private void RpcBulletVFX(Quaternion spreadRot, VfxType vfxType)
     {
         GameObject vfx = currentWeapon.sparkProjectileVfx;
-        if(vfxType == VfxType.NoneSpark)
+        if(vfxType == VfxType.NonSpark)
             vfx = currentWeapon.nonSparkProjectileVfx;
 
         GameObject bullet = Instantiate(vfx, hand.position, arm.rotation * spreadRot);
@@ -276,12 +281,6 @@ public class PlayerWeaponSystem : NetworkBehaviour
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(hand.position, hitPointCache);
         }
-    }
-
-    private enum VfxType
-    {
-        NoneSpark,
-        Spark
     }
 }
 

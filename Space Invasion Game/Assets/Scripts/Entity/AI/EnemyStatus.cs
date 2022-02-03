@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyStatus : EntityStatus
 {
-    [Header("Enemy Settings")]
+    [Header("Enemy Specific Settings")]
     [SerializeField] private bool dummy = false;
     [SerializeField] private float baseKnockbackForce = 300f;
 

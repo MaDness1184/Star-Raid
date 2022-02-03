@@ -70,18 +70,12 @@ public class DebugConsole : MonoBehaviour
         Application.logMessageReceived -= InternalLog;
     }
 
-    private void Update()
-    {
-        LogUpdate("This is what the LogUpdate does" +
-            "\n Uptime = " + Time.time);
-    }
-
     private void LateUpdate()
     {
-        debugText.text = (staticText.Length > 0 ? "\n> Log" + staticText : "") +
-           (warningText.Length > 0 ? "\n> Warning" + warningText : "" +
-           (updateText.Length > 0 ? "\n> Update" + updateText : "") +
-           (logText.Length > 0 ? "\n> Console\n" + logText : ""));
+        debugText.text = (staticText.Length > 0 ? "\n>> Log <<\n" + staticText : "") +
+           (warningText.Length > 0 ? "\n>> Warning <<\n" + warningText : "" +
+           (updateText.Length > 0 ? "\n>> Update <<\n" + updateText : "") +
+           (logText.Length > 0 ? "\n>> Console <<\n" + logText : ""));
 
         updateText = "";
     }
@@ -166,6 +160,7 @@ public class DebugConsole : MonoBehaviour
         if (!debugUI.activeInHierarchy) return;
 
         inputField.Select();
+        Log($"> {inputField.text}");
 
         string[] input = inputField.text.ToLower().Split(' ');
         inputField.text = "";
@@ -175,6 +170,9 @@ public class DebugConsole : MonoBehaviour
         // Case for one keyword only, do not put command with 2 keywords here
         switch (input[0]) 
         {
+            case "command":
+                // Function
+                break;
             case "disconnect":
                 Disconnect();
                 break;
@@ -323,7 +321,7 @@ public class DebugConsole : MonoBehaviour
         }
         else
         {
-            Log($"{input} bad argument");
+            Log($"Bad argument: Cannot parse '{input}' to [bool]");
             return true;
         }
     }
@@ -336,7 +334,7 @@ public class DebugConsole : MonoBehaviour
         }
         else
         {
-            Log($"{input} bad argument");
+            Log($"Bad argument: Cannot parse '{input}' to [int]");
             return true;
         }
     }

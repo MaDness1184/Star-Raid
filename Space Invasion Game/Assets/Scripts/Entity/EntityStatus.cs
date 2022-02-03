@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class EntityStatus : NetworkBehaviour
 {
-    [Header("Entity Settings")]
+    [Header("Entity Specific Settings")]
     [SerializeField] private int maxHP = 10;
     [SerializeField] private HostilityType hostility;
     [SerializeField] private ParticleSystem onDamagedParticle;
-    [SerializeField] protected GameObject[] deathVfxs;
+    [SerializeField] protected GameObject[] onDespawnVfxs;
 
-    [Header("Entity Debug")]
+    //[Header("Entity Debug")]
     [SyncVar(hook = nameof(HandleHPChange))]
-    [SerializeField] protected int internalCurrentHP;
+    protected int internalCurrentHP;
 
     protected virtual void HandleHPChange(int oldHP, int newHP)
     {
@@ -35,23 +35,6 @@ public class EntityStatus : NetworkBehaviour
 
     }
 
-    /*[Command(requiresAuthority = false)]
-    public void CmdKnockBack(float force, Vector3 source)
-    {
-        RpcKnockBack(force, source);
-    }
-
-    [ClientRpc]
-    protected virtual void RpcKnockBack(float force, Vector3 source)
-    {
-        if (!hasAuthority) return;
-
-        Debug.Log("Knocking back entity");
-
-        Vector3 direction = source - transform.position;
-        GetComponent<Rigidbody2D>().AddForce(direction * force);
-    }*/
-
     public int GetCurrentHP()
     {
         return internalCurrentHP;
@@ -69,7 +52,7 @@ public class EntityStatus : NetworkBehaviour
 
     public override void OnStopClient()
     {
-        foreach (GameObject vfxGO in deathVfxs)
+        foreach (GameObject vfxGO in onDespawnVfxs)
         {
             GameObject go = Instantiate(vfxGO, transform.position, Quaternion.identity);
         }
@@ -86,14 +69,5 @@ public class EntityStatus : NetworkBehaviour
     {
         onDamagedParticle.Play();
     }
-
-    /*[ClientRpc]
-    protected void RPCSpawnDeathVFXs()
-    {
-        foreach (GameObject vfxGO in deathVfxs)
-        {
-            GameObject go = Instantiate(vfxGO, transform.position, Quaternion.identity);
-        }  
-    }*/
 }
 

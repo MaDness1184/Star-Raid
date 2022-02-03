@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class PlayerStatus : EntityStatus
 {
-    [Header("Player Settings")]
+    [Header("Player Specific Settings")]
     [SerializeField] private bool godMode = false;
     [SerializeField] private bool vulnerableMode = false;
     [SerializeField] private float respawnDuration = 5f;
@@ -89,7 +89,7 @@ public class PlayerStatus : EntityStatus
     [Server]
     private void OnDeath()
     {
-        foreach (GameObject vfxGO in deathVfxs)
+        foreach (GameObject vfxGO in onDespawnVfxs)
         {
             GameObject go = Instantiate(vfxGO, transform.position, Quaternion.identity);
         }

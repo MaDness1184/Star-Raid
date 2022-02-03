@@ -1,3 +1,4 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,9 @@ public class Door : MonoBehaviour
 {
     [SerializeField] private bool isLocked, isBroken, isOpen;
     [SerializeField] private GameObject lockedIndicator;
-    [SerializeField] private int unitsInCollider = 0;
     [SerializeField] private GameObject obsticleCollider;
+
+    List<uint> netIDList = new List<uint>();
 
     // Components
     Animator animator;
@@ -77,7 +79,20 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D otherCollision)
     {
-        if (otherCollision.CompareTag("Interactive"))
+        if(otherCollision.TryGetComponent<NetworkIdentity>(out NetworkIdentity identity))
+        {
+            if (!netIDList.Contains(identity.netId))
+            {
+                if (!isOpen)
+                {
+                    Open();
+                }
+
+                netIDList.Add(identity.netId);
+            }
+        }
+
+        /*if (otherCollision.CompareTag("Interactive"))
         {
             if (!isOpen)
             {
@@ -85,12 +100,23 @@ public class Door : MonoBehaviour
             }
 
             unitsInCollider++;
-        }
+        }*/
     }
 
     private void OnTriggerExit2D(Collider2D otherCollision)
     {
-        if (otherCollision.CompareTag("Interactive"))
+        if (otherCollision.TryGetComponent<NetworkIdentity>(out NetworkIdentity identity))
+        {
+            if (netIDList.Contains(identity.netId))
+            {
+                netIDList.Remove(identity.netId);
+            }
+
+            if (netIDList.Count <= 0)
+                Close();
+        }
+
+        /*if (otherCollision.CompareTag("Interactive"))
         {
             unitsInCollider--;
 
@@ -99,6 +125,6 @@ public class Door : MonoBehaviour
                 Close();
                 unitsInCollider = 0;
             }
-        }
+        }*/
     }
 }
