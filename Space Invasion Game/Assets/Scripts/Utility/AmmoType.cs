@@ -1,8 +1,8 @@
-public enum AmmoType
+public enum AmmoType : int
 {
-    Normal,
-    Penetration,
-    Explosive,
-    Fire,
-    Energy
+    Normal = 0,
+    Penetration = 1,
+    Explosive = 2,
+    Fire = 3,
+    Energy = 4
 }

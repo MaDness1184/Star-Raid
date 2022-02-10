@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Interactive
   - Unit
   layers:
   - Default
@@ -17,9 +16,9 @@ TagManager:
   - Entity
   - Machinery
   - Hover Collider
-  - Interactive Collider
-  - 
-  - 
+  - Player
+  - Enemy
+  - Wall
   - 
   - 
   - 
@@ -51,6 +50,9 @@ TagManager:
     locked: 0
   - name: Collisions
     uniqueID: 4132298097
+    locked: 0
+  - name: Grid Highlight
+    uniqueID: 3577540309
     locked: 0
   - name: Player
     uniqueID: 1359686127

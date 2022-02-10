@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class EnemyController : EntityController
 {
-    [Header("Physic Setting")]
+    [Header("Enemy Physic Settings")]
     [SerializeField] private bool dummy = false;
     [SerializeField] private float moveSpeed = 300;
     [SerializeField] private float movementSmoothing = 0.1f;
 
-    [Header("Attack Setting")]
+    [Header("Enemy Attack Settings")]
     [SerializeField] private int damage = 1;
     [SerializeField] private float attackDelayTime = 0.5f;
     //[SerializeField] private float attackCdr = 0.5f;
@@ -22,13 +22,13 @@ public class EnemyController : EntityController
     //[SerializeField] private float attackRadius = 1.25f;
     //[SerializeField] private LayerMask attackableLayer;
 
-    [Header("Pathfinding Setting")]
+    [Header("Enemy Pathfinding Settings")]
     [SerializeField] private float nextWaypointDistance = 3f;
     [SerializeField] private float pathUpdateCdr = 0.5f;
     //[SerializeField] private float obstacleScanDistance = 0.7f;
     //[SerializeField] private float playerScanCdr = 1f;
 
-    [Header("Debugs")]
+    [Header("Enemy Debugs")]
     [SerializeField] private Transform target;
 
     private Path path;
@@ -42,31 +42,43 @@ public class EnemyController : EntityController
     private float nextAttackRecovery;
     private float nextDelayAttack;
 
+    private bool controllable = true;
+
     private Seeker seeker;
-    private Rigidbody2D rbody;
+    private Rigidbody2D rb2D;
 
     private Vector3 velocity = Vector3.zero;
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        if (!isServer) return;
         seeker = GetComponent<Seeker>();
-        rbody = GetComponent<Rigidbody2D>();
+        rb2D = GetComponent<Rigidbody2D>();
     }
 
     [ServerCallback]
     void Update()
     {
-        if (dummy && target != null) return;
+        if (!controllable || dummy && target != null) return;
 
         UpdatePath();
     }
 
-    [ServerCallback]
+    Vector3 cachedPosition;
+
     private void FixedUpdate()
     {
-        //TODO: Add target hostility check
+        if (transform.position != cachedPosition)
+            PlayMovementSFXs();
+        else
+            StopMovementSFXs();
+
+        cachedPosition = transform.position;
+
+        if (!isServer) return;
+
+        if (!controllable) return;
+
         Attack();
 
         if (dummy) return;
@@ -97,7 +109,7 @@ public class EnemyController : EntityController
             }
 
             if (seeker.IsDone() && target != null)
-                seeker.StartPath(rbody.position, target.position, OnPathComplete);
+                seeker.StartPath(rb2D.position, target.position, OnPathComplete);
             nextPathUpdate = Time.time + pathUpdateCdr;
         }
     }
@@ -117,11 +129,11 @@ public class EnemyController : EntityController
     {
         if (Time.time < attackRecorveryTime) return;
 
-        Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rbody.position).normalized;
+        Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb2D.position).normalized;
         Vector3 targetVelocity = direction * moveSpeed * Time.fixedDeltaTime;
-        rbody.velocity = Vector3.SmoothDamp(rbody.velocity, targetVelocity, ref velocity, movementSmoothing);
+        rb2D.velocity = Vector3.SmoothDamp(rb2D.velocity, targetVelocity, ref velocity, movementSmoothing);
 
-        if (Vector2.Distance(rbody.position, path.vectorPath[currentWaypoint]) < nextWaypointDistance)
+        if (Vector2.Distance(rb2D.position, path.vectorPath[currentWaypoint]) < nextWaypointDistance)
         {
             currentWaypoint++;
         }
@@ -160,7 +172,7 @@ public class EnemyController : EntityController
 
         nextDelayAttack = Time.time + attackDelayTime + attackRecorveryTime;
         // Strike
-        targetStatus.CmdDealDamage(damage, netIdentity);
+        targetStatus.CmdRecieveDamage(damage, netIdentity);
         RpcShowAttackSuccessVFX();
         nextAttackRecovery = Time.time + attackRecorveryTime;
     }
@@ -170,6 +182,7 @@ public class EnemyController : EntityController
         ShowAttackVFX(newAttacking);
     }
 
+    [Client]
     private void ShowAttackVFX(bool show)
     {
         attackVfx.SetActive(show);
@@ -187,6 +200,19 @@ public class EnemyController : EntityController
         attackSuccessVfx.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         attackSuccessVfx.SetActive(false);
+    }
+
+    [Server]
+    public void SetControllable(bool newControllable)
+    {
+        controllable = newControllable;
+
+        if (controllable) return;
+
+        attacking = false;
+        nextAttackRecovery = 0f;
+        nextDelayAttack = 0f;
+        nextPathUpdate = 0f;
     }
 
     #endregion

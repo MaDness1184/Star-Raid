@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192d6cb9e64a7e94dbcc57461a8bc280, type: 3}
+  m_Name: Submachine Gun
+  m_EditorClassIdentifier: 
+  weaponName: Submachine Gun
+  weaponSlot: 1
+  automatic: 1
+  damage: 1
+  range: 8
+  spreadArc: 4
+  pelletPerShot: 1
+  pelletCaliber: 0.1
+  ammoType: 0
+  shotgunStyleReload: 0
+  reloadTime: 0.7
+  magazineSize: 40
+  primaryCdr: 0.1
+  secondaryCdr: 0
+  selectSfxs:
+  - {fileID: 8300000, guid: e8b415350034eca4f89db912abe44057, type: 3}
+  - {fileID: 8300000, guid: c6c46fc14307e3e42b54168ce9075518, type: 3}
+  - {fileID: 8300000, guid: c9d9ee15682e09e48ade5f45b0d3c9a9, type: 3}
+  - {fileID: 8300000, guid: f4222b0571fcfc44b8d11444de3cd1f6, type: 3}
+  drySfxs:
+  - {fileID: 8300000, guid: 6de3befeb39cc534e90ac8b7d8cb1520, type: 3}
+  - {fileID: 8300000, guid: 72855fc0998a0664eab61ad056f8bdc1, type: 3}
+  - {fileID: 8300000, guid: d0ae2c7e4a1ce7a42bd91b3934d0502e, type: 3}
+  primarySfxs:
+  - {fileID: 8300000, guid: 47c29bc70ad9fa0498b228bc111ab374, type: 3}
+  - {fileID: 8300000, guid: bdfd0c40779b9b24e9e500c68e222ff4, type: 3}
+  - {fileID: 8300000, guid: c9ed85320c54d15469608ab3caface79, type: 3}
+  - {fileID: 8300000, guid: 8de162ff0a250fc4ebeb3a10ca3fd17e, type: 3}
+  - {fileID: 8300000, guid: 78c3a2ce9d2b21942abf3e473ca3357d, type: 3}
+  - {fileID: 8300000, guid: 7c4d64804ccf6c343bb04a3c5ec66565, type: 3}
+  - {fileID: 8300000, guid: fafb9e602806c3246b9c6ccb3ea98c1b, type: 3}
+  - {fileID: 8300000, guid: 6edcfab49cb54094197393210bdcea3d, type: 3}
+  - {fileID: 8300000, guid: 4f03c9c45e3093e4793b0664162b0781, type: 3}
+  secondarySfxs: []
+  reloadSfxs:
+  - {fileID: 8300000, guid: 1f6fc76ef0acf664db38ffcb119786ff, type: 3}
+  - {fileID: 8300000, guid: b407bb6694544324ead27ac12f0e1128, type: 3}
+  - {fileID: 8300000, guid: 8bd471e8271aeba45b6f79d26fbd6bd1, type: 3}
+  - {fileID: 8300000, guid: a84e20e05dd33554b95ca950879f4897, type: 3}

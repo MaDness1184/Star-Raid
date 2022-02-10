@@ -18,7 +18,7 @@ public class LobbyManager : MonoBehaviour
     {
         if (!SteamManager.Initialized)
         {
-            //DebugUI.log.NewStatic("Steam was not initialized");
+            DebugConsole.Log("Steam was not initialized");
             return;
         }
 
@@ -33,11 +33,11 @@ public class LobbyManager : MonoBehaviour
 
         if (!SteamManager.Initialized)
         {
-            //DebugUI.log.NewStatic("Steam was not initialized");
+            DebugConsole.Log("Steam was not initialized");
             return;
         }
-           
-        //DebugUI.log.NewStatic("Creating Steam Lobby");
+
+        DebugConsole.Log("Creating Steam Lobby");
 
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, 4);
 
@@ -50,11 +50,11 @@ public class LobbyManager : MonoBehaviour
 
         if (!SteamManager.Initialized)
         {
-            //DebugUI.log.NewStatic("Steam was not initialized");
+            DebugConsole.Log("Steam was not initialized");
             return;
         }
 
-        //DebugUI.log.NewStatic("Joinning Steam");
+        DebugConsole.Log("Joinning Steam");
 
         SteamFriends.ActivateGameOverlay("Friends");
     }
@@ -63,7 +63,7 @@ public class LobbyManager : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK)
         {
-            //DebugUI.log.NewStatic("Lobby Create failed");
+            DebugConsole.Log("Lobby Create failed");
             return;
         }
 
@@ -75,14 +75,14 @@ public class LobbyManager : MonoBehaviour
             HostAddressKey,
             SteamUser.GetSteamID().ToString());
 
-        //DebugUI.log.NewStatic($"SteamID {SteamUser.GetSteamID()}");
+        DebugConsole.Log($"SteamID {SteamUser.GetSteamID()}");
 
         SteamFriends.ActivateGameOverlayInviteDialog(lobbyID);
     }
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
     {
-        //DebugUI.log.NewStatic("Join request recieved");
+        DebugConsole.Log("Join request recieved");
 
         Transport.activeTransport = GetComponent<FizzySteamworks>();
 
@@ -93,13 +93,13 @@ public class LobbyManager : MonoBehaviour
     {
         if (NetworkServer.active) { return; }
 
-        //DebugUI.log.NewStatic("Client joined");
+        DebugConsole.Log("Client joined");
         //Client joined
         string hostAddress = SteamMatchmaking.GetLobbyData(
             new CSteamID(callback.m_ulSteamIDLobby),
             HostAddressKey);
 
-        //DebugUI.log.NewStatic($"SteamID {hostAddress}");
+        DebugConsole.Log($"SteamID {hostAddress}");
 
         NetworkManager.singleton.networkAddress = hostAddress;
         NetworkManager.singleton.StartClient();

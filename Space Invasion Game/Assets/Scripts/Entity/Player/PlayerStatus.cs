@@ -19,19 +19,19 @@ public class PlayerStatus : EntityStatus
     [SerializeField] private UnityEvent OnPlayerStunned;
     [SerializeField] private UnityEvent OnPlayerUnStunned;
 
-    [Header("Player Death Events")]
+    /*[Header("Player Spawn Events")]
     [SerializeField] private UnityEvent OnPlayerDeath;
-    [SerializeField] private UnityEvent OnPlayerRespawn;
+    [SerializeField] private UnityEvent OnPlayerRespawn;*/
 
     [Header("Player Debugs")]
     [SyncVar(hook = nameof(HandleNameChange))]
     private string playerName = "Uninitialized";
 
     [SyncVar]
-    [SerializeField] private bool internalIsStunned = false;
+    [SerializeField] private bool _isStunned = false;
     public bool isStunned
     {
-        get { return internalIsStunned; }
+        get { return _isStunned; }
     }
 
     [SyncVar]
@@ -46,93 +46,90 @@ public class PlayerStatus : EntityStatus
     private Rigidbody2D rb2D;
     private SpriteRenderer[] spriteRenderers;
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         rb2D = GetComponent<Rigidbody2D>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+    }
 
+    void Start()
+    {
         if (isServer)
-            internalCurrentHP = GetMaxHP();
+            ResetCurrentHP();
 
-        if (!isLocalPlayer) return;
+        if (isClient)
+            ClientEnableEntity(isSpawned);
+
+        if (!isLocalPlayer) return; 
 
         Camera.main.GetComponent<CinemachineVirtualCamera>().Follow = gameObject.transform;
         DebugConsole.main.SetPlayer(this);
     }
 
     [Server]
-    protected override void DealDamage(int damage, NetworkIdentity perpetratorIdentity)
+    private void OnRespawn()
     {
-        if (vulnerableMode) damage = GetMaxHP();
-        if (!godMode)
-        {
-            PlayOnDamagedParticle();
-            internalCurrentHP -= damage;
-            DebugConsole.Log($"{name} took {damage}");
-        }
+        EntitySpawn();
+        ResetCurrentHP();
 
-        StartCoroutine(Invincible(iframeDuration));
-
-        if (internalCurrentHP <= 0)
-        {
-            Debug.Log(gameObject.name + " died");
-            if (!respawning)
-                OnDeath();
-        }
-        else
-        {
-            KnockBack(damage * baseKnockbackForce, perpetratorIdentity.transform.position);
-        }
+        Teleport(CloningMachine.location);
     }
 
     [Server]
     private void OnDeath()
     {
-        foreach (GameObject vfxGO in onDespawnVfxs)
-        {
-            GameObject go = Instantiate(vfxGO, transform.position, Quaternion.identity);
-        }
+        EntityDeSpawn();
+        SetCurrentHP(0);
 
-        Stun(true);
-        EnablePlayer(false);
+        RpcPlayOnDespawnVFXs(transform.position);
+        RpcPlayOnDeSpawnSFXs();
 
         StartCoroutine(Respawning());
-
-        OnPlayerDeath?.Invoke();
     }
 
     [Server]
     private IEnumerator Respawning()
     {
-        respawning = true;
         yield return new WaitForSeconds(respawnDuration);
-        respawning = false;
-
         OnRespawn();
     }
 
-    [Server]
-    private void OnRespawn()
+    [Client]
+    protected override void ClientEnableEntity(bool enable)
     {
-        Stun(false);
-        EnablePlayer(true);
-
-        internalCurrentHP = GetMaxHP();
-        Teleport(CloningMachine.location);
-
-        OnPlayerRespawn?.Invoke();
-    }
-
-    [ClientRpc]
-    private void EnablePlayer(bool enable)
-    {
-        if (hasAuthority && rb2D.bodyType != RigidbodyType2D.Static) 
-            rb2D.velocity = Vector3.zero;
-
+        rb2D.velocity = Vector3.zero;
+        rb2D.angularVelocity = 0; 
         rb2D.simulated = enable;
+
         foreach (SpriteRenderer spriteRenderer in spriteRenderers)
             spriteRenderer.color = enable ? Color.white : Color.clear;
+
+        //light?
+    }
+
+    [Server]
+    public override void RecieveDamage(int damage, NetworkIdentity perpetratorIdentity)
+    {
+        if (currentHP <= 0) return;
+
+        RpcPlayOnDamagedVFXs();
+        RpcPlayOnDamagedSFXs();
+
+        if (vulnerableMode) damage = GetMaxHP();
+        if (!godMode || vulnerableMode) ModifyCurrentHP(-damage);
+
+        StartCoroutine(Invincible(iframeDuration));
+
+        if (currentHP <= 0)
+        {
+            OnDeath();
+        }
+        else
+        {
+            KnockBack(damage * baseKnockbackForce, perpetratorIdentity.transform.position);
+        }
     }
 
     [Server]
@@ -148,7 +145,7 @@ public class PlayerStatus : EntityStatus
     [Server]
     public void Stun(bool stun)
     {
-        internalIsStunned = stun;
+        _isStunned = stun;
 
         if (stun)
         {
@@ -182,7 +179,7 @@ public class PlayerStatus : EntityStatus
     [ClientRpc]
     private void RpcKnockBack(float force, Vector3 source)
     {
-        if (!hasAuthority) return;
+        if (!hasAuthority || respawning) return;
 
         Vector3 direction = transform.position - source;
         GetComponent<Rigidbody2D>().AddForce(direction * force);

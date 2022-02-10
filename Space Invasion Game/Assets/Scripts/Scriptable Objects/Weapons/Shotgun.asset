@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192d6cb9e64a7e94dbcc57461a8bc280, type: 3}
+  m_Name: Shotgun
+  m_EditorClassIdentifier: 
+  weaponName: Shotgun
+  weaponSlot: 2
+  automatic: 0
+  damage: 2
+  range: 7
+  spreadArc: 20
+  pelletPerShot: 5
+  pelletCaliber: 0.1
+  ammoType: 0
+  shotgunStyleReload: 1
+  reloadTime: 0.5
+  magazineSize: 7
+  primaryCdr: 0.5
+  secondaryCdr: 0
+  selectSfxs:
+  - {fileID: 8300000, guid: 68db4d2e9e69a2b4993f94767bfb92b0, type: 3}
+  - {fileID: 8300000, guid: d71e2ce1f2010c742bad6051072ef564, type: 3}
+  - {fileID: 8300000, guid: e3d0ea81fe5754048a0318d53d2f375a, type: 3}
+  - {fileID: 8300000, guid: 77269392a79f4a24c8c8e31ae86e8b73, type: 3}
+  drySfxs:
+  - {fileID: 8300000, guid: 7d9417f22f05e4e469beb91936753fad, type: 3}
+  - {fileID: 8300000, guid: d72b6cce79c73a447a8f7503ff27922c, type: 3}
+  primarySfxs:
+  - {fileID: 8300000, guid: d005a8697c8cb744293b02d49b85336e, type: 3}
+  - {fileID: 8300000, guid: c8ac577ba3290884a9c899d6edd7e552, type: 3}
+  - {fileID: 8300000, guid: ed1c1170f41da3c4786a588ecc60aaf0, type: 3}
+  - {fileID: 8300000, guid: c6ef668236859b242b255522d7d50817, type: 3}
+  secondarySfxs: []
+  reloadSfxs:
+  - {fileID: 8300000, guid: c97065784a98a6c4884f38f582d2b89b, type: 3}
+  - {fileID: 8300000, guid: 27e2ce810655c97449362597fc1d432b, type: 3}
+  - {fileID: 8300000, guid: 2c6490f82e120df43a1bfa8c37bf1947, type: 3}
+  - {fileID: 8300000, guid: 47da0c668532ea84a9962de8695db107, type: 3}
+  - {fileID: 8300000, guid: a21fcb8bfabead84b9be29e7a18f6de9, type: 3}
+  - {fileID: 8300000, guid: 87917823f8e2cfb438312f653bfd2576, type: 3}
+  - {fileID: 8300000, guid: 389a8458977059e4cb66932f90ad2d9f, type: 3}
+  - {fileID: 8300000, guid: 62eb845bfe067ad4bb108be5680df6b8, type: 3}

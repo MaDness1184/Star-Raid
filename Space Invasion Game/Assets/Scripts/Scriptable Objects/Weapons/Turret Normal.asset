@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192d6cb9e64a7e94dbcc57461a8bc280, type: 3}
+  m_Name: Turret Normal
+  m_EditorClassIdentifier: 
+  weaponName: Turret Normal
+  weaponSlot: 99
+  automatic: 1
+  damage: 1
+  range: 8
+  spreadArc: 2
+  pelletPerShot: 1
+  pelletCaliber: 0.1
+  ammoType: 0
+  shotgunStyleReload: 0
+  reloadTime: 0
+  magazineSize: 0
+  primaryCdr: 0.1
+  secondaryCdr: 0
+  selectSfxs: []
+  drySfxs: []
+  primarySfxs:
+  - {fileID: 8300000, guid: b7399ad9f2fddca4d907876527be420b, type: 3}
+  - {fileID: 8300000, guid: 18791bc4cbece5344a58b7547d809d2f, type: 3}
+  - {fileID: 8300000, guid: 8e10ddd0372e6e742a734093b303e5fe, type: 3}
+  - {fileID: 8300000, guid: e53de8c8d1b2e10499459ce6cf0ba233, type: 3}
+  - {fileID: 8300000, guid: fd8e83bff68940c4f86d135e6c719767, type: 3}
+  - {fileID: 8300000, guid: 82760f5f21e0ea9499ec08deed7fd5f7, type: 3}
+  - {fileID: 8300000, guid: b979fbfdf589d5549952835abc17811e, type: 3}
+  - {fileID: 8300000, guid: 3c03951ac6e9e274c9de5a7e4ce76a1e, type: 3}
+  secondarySfxs: []
+  reloadSfxs: []

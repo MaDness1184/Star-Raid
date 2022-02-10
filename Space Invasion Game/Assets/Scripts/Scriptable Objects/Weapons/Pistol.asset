@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192d6cb9e64a7e94dbcc57461a8bc280, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  weaponName: Pistol
+  weaponSlot: 0
+  automatic: 0
+  damage: 2
+  range: 10
+  spreadArc: 2
+  pelletPerShot: 1
+  pelletCaliber: 0.1
+  ammoType: 0
+  shotgunStyleReload: 0
+  reloadTime: 0.5
+  magazineSize: 15
+  primaryCdr: 0.1
+  secondaryCdr: 0
+  selectSfxs:
+  - {fileID: 8300000, guid: b82babe870dde5544ab6f0c0fd1d35cf, type: 3}
+  - {fileID: 8300000, guid: e688ff3c7ad1c254e84e0894e86743aa, type: 3}
+  - {fileID: 8300000, guid: f46499f1ebe5bd34ea03c2e20aa5b9f4, type: 3}
+  drySfxs:
+  - {fileID: 8300000, guid: baf337185280f0b4989c164f09bad19b, type: 3}
+  - {fileID: 8300000, guid: 14241c75d912de44d971bfed50d2ec95, type: 3}
+  - {fileID: 8300000, guid: 2b4358ff6e4ac78409d011267b20dce2, type: 3}
+  - {fileID: 8300000, guid: 7611207a2004f454da1a826ea4e2aabf, type: 3}
+  - {fileID: 8300000, guid: 9af1dc6783c0cb54191fbe98d2e96e3c, type: 3}
+  - {fileID: 8300000, guid: 804f36f13bb0c5a4a8b20142559a9590, type: 3}
+  primarySfxs:
+  - {fileID: 8300000, guid: 4af1a7cf8b7ae604c929da90b2b79e2b, type: 3}
+  - {fileID: 8300000, guid: f8cae74cd4571984d89f7db498217216, type: 3}
+  - {fileID: 8300000, guid: fb82f381cce5f474ca33365966bcfdf9, type: 3}
+  - {fileID: 8300000, guid: 9d74f6945f44ac2478562d280ddb5890, type: 3}
+  - {fileID: 8300000, guid: 6144acfb6087fab4eb7a528e5e2c1f89, type: 3}
+  secondarySfxs:
+  - {fileID: 8300000, guid: c7c5b0600074c9c47ac3e5370b5dfb50, type: 3}
+  - {fileID: 8300000, guid: abd5dbac2e10583459053d1ebb9f9968, type: 3}
+  - {fileID: 8300000, guid: 3daca7cea7e642c479d8cf6e364912e0, type: 3}
+  - {fileID: 8300000, guid: 9f5a8ac87be41d84b8edf80d58791398, type: 3}
+  reloadSfxs:
+  - {fileID: 8300000, guid: d5dd05b902714ac48ae4ae12752ad8cf, type: 3}
+  - {fileID: 8300000, guid: 166159c555de12b4593dc65ac337560c, type: 3}

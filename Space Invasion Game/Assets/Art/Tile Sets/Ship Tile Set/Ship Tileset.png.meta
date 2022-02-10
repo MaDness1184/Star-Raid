@@ -50,6 +50,30 @@ TextureImporter:
   - first:
       213: -1935092440319363187
     second: Ship Tileset_44
+  - first:
+      213: -4024098477175217118
+    second: Ship Tileset_45
+  - first:
+      213: 925874361796558293
+    second: Ship Tileset_53
+  - first:
+      213: -6517270964678895095
+    second: Ship Tileset_46
+  - first:
+      213: -1568014823097951704
+    second: Ship Tileset_55
+  - first:
+      213: 1411980613675221694
+    second: Ship Tileset_57
+  - first:
+      213: -7240016273907159324
+    second: Ship Tileset_60
+  - first:
+      213: -2991930957630718833
+    second: Ship Tileset_67
+  - first:
+      213: 4162361868123635855
+    second: Ship Tileset_68
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -595,7 +619,7 @@ TextureImporter:
       name: Ship Tileset_23
       rect:
         serializedVersion: 2
-        x: 304
+        x: 288
         y: 452
         width: 32
         height: 32
@@ -616,7 +640,7 @@ TextureImporter:
       name: Ship Tileset_25
       rect:
         serializedVersion: 2
-        x: 352
+        x: 320
         y: 452
         width: 32
         height: 32
@@ -1121,111 +1145,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ship Tileset_67
-      rect:
-        serializedVersion: 2
-        x: 208
-        y: 420
-        width: 16
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f8c3ded55a68a76d0800000000000000
-      internalID: -2991930957630718833
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_74
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 404
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4ee99c264494e6170800000000000000
-      internalID: 8173550931788013284
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_75
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 404
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 94b37f333cb165b80800000000000000
-      internalID: -8406501129236038839
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_76
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 404
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9cd669c01b1846040800000000000000
-      internalID: 4639976113518833097
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_77
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 404
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 747644164fc0d3fa0800000000000000
-      internalID: -5819480899749386425
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Ship Tileset_78
       rect:
         serializedVersion: 2
@@ -1331,69 +1250,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ship Tileset_84
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 404
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a80cf6bf72520a1e0800000000000000
-      internalID: -2188708565249703798
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_85
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 404
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 42f0cbd681e1cde10800000000000000
-      internalID: 2223685406283271972
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_86
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 404
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 22b164421f232c780800000000000000
-      internalID: -8664306721830331614
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Ship Tileset_87
       rect:
         serializedVersion: 2
@@ -1484,9 +1340,9 @@ TextureImporter:
         x: 16
         y: 388
         width: 16
-        height: 19
+        height: 32
       alignment: 9
-      pivot: {x: 0.50290334, y: 0.39094302}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
@@ -1509,9 +1365,9 @@ TextureImporter:
         x: 32
         y: 388
         width: 16
-        height: 19
+        height: 32
       alignment: 9
-      pivot: {x: 0.49999952, y: 0.39513838}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
@@ -1555,9 +1411,9 @@ TextureImporter:
         x: 64
         y: 388
         width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1576,9 +1432,9 @@ TextureImporter:
         x: 80
         y: 388
         width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1597,9 +1453,9 @@ TextureImporter:
         x: 96
         y: 388
         width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1618,9 +1474,9 @@ TextureImporter:
         x: 112
         y: 388
         width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1733,69 +1589,6 @@ TextureImporter:
       bones: []
       spriteID: 6b2645a57eaaf6ac0800000000000000
       internalID: -3859678445003578698
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_107
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 372
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ae59c1426f7ddfcf0800000000000000
-      internalID: -216779754876135958
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_108
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 372
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b5e9d15c745352f60800000000000000
-      internalID: 8008866094714297947
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ship Tileset_109
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 372
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d2e389ec01f93fb30800000000000000
-      internalID: 4319971362112814637
       vertices: []
       indices: 
       edges: []
@@ -2429,8 +2222,8 @@ TextureImporter:
       name: Ship Tileset_42
       rect:
         serializedVersion: 2
-        x: 96
-        y: 308
+        x: 80
+        y: 420
         width: 16
         height: 16
       alignment: 0
@@ -2450,8 +2243,8 @@ TextureImporter:
       name: Ship Tileset_43
       rect:
         serializedVersion: 2
-        x: 112
-        y: 308
+        x: 192
+        y: 484
         width: 16
         height: 16
       alignment: 0
@@ -2471,8 +2264,8 @@ TextureImporter:
       name: Ship Tileset_44
       rect:
         serializedVersion: 2
-        x: 128
-        y: 308
+        x: 208
+        y: 452
         width: 16
         height: 16
       alignment: 0
@@ -2484,6 +2277,174 @@ TextureImporter:
       bones: []
       spriteID: d8778379dab2525e0800000000000000
       internalID: -1935092440319363187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Tileset_45
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 388
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 224e7ce61c78728c0800000000000000
+      internalID: -4024098477175217118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Tileset_53
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 404
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dd768993dd59dc00800000000000000
+      internalID: 925874361796558293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Tileset_46
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 436
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90ad85d66900e85a0800000000000000
+      internalID: -6517270964678895095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Tileset_55
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 325
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82a13ba73da4d3ae0800000000000000
+      internalID: -1568014823097951704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Tileset_57
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 325
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb289db13ec589310800000000000000
+      internalID: 1411980613675221694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Tileset_60
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 325
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ee67b1ee8b468b90800000000000000
+      internalID: -7240016273907159324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Tileset_67
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 420
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8c3ded55a68a76d0800000000000000
+      internalID: -2991930957630718833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Tileset_68
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 420
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f800420e01ea3c930800000000000000
+      internalID: 4162361868123635855
       vertices: []
       indices: 
       edges: []

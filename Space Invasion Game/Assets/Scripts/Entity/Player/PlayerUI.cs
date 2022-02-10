@@ -12,8 +12,8 @@ public class PlayerUI : MonoBehaviour
     private Text playerUIText;
 
     private string playerName;
-    private int playerHP;
     private string heartBuilder;
+    private string inventoryString;
 
     private void Awake()
     {
@@ -28,27 +28,28 @@ public class PlayerUI : MonoBehaviour
         playerUIText = GetComponent<Text>();
     }
 
-    public void updateText(string text)
+    public void UpdateText()
     {
-        playerUIText.text = playerName + "\n" + heartBuilder + "\n" +text;
-    }
-
-    public void addText(string text)
-    {
-        playerUIText.text += text;
+        playerUIText.text = playerName + "\n" + heartBuilder + "\n" + inventoryString;
     }
 
     public void SetPlayerName(string newName)
     {
         playerName = newName;
+        UpdateText();
     }
 
     public void SetPlayerHP(int newHP)
     {
-        playerHP = newHP;
-
         heartBuilder = "";
         for (int i = 0; i < newHP; i++)
             heartBuilder += HEART_SYMBOL;
+
+        UpdateText();
+    }
+    public void SetInventoryString(string newInventoryString)
+    {
+        inventoryString = newInventoryString;
+        UpdateText();
     }
 }

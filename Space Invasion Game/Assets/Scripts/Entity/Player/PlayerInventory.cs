@@ -4,20 +4,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerWeaponSystem))]
 public class PlayerInventory : EntityInventory
 {
-
-    [Header("Settings")]
+    [Header("Player Specific Setting")]
+    [SerializeField] private bool unlimitedAmmo;
     [SerializeField] private AmmoCount[] AmmoCounts;
-
-    private readonly SyncDictionary<AmmoType, int> internalAmmoCounts = new SyncDictionary<AmmoType, int>();
 
     private PlayerWeaponSystem playerWeaponSystem;
 
-    private void Start()
+    private readonly SyncDictionary<AmmoType, int> internalAmmoCounts = new SyncDictionary<AmmoType, int>();
+
+    private void Awake()
     {
         playerWeaponSystem = GetComponent<PlayerWeaponSystem>();
+    }
 
+    private void Start()
+    {
         if(isServer)
         {
             for(int i = 0; i < AmmoCounts.Length; i++)
@@ -33,13 +37,13 @@ public class PlayerInventory : EntityInventory
         int ammoTypeCount = internalAmmoCounts[ammoType];
         if (ammoTypeCount > amount) //Reload success
         {
-            playerWeaponSystem.RpcReload(amount);
-            internalAmmoCounts[ammoType] -= amount;
+            playerWeaponSystem.ReloadFromInventory(amount);
+            if(!unlimitedAmmo) internalAmmoCounts[ammoType] -= amount;
         }
         else if (ammoTypeCount > 0 && ammoTypeCount < amount) //Partially success
         {
-            playerWeaponSystem.RpcReload(ammoTypeCount);
-            internalAmmoCounts[ammoType] = 0;
+            playerWeaponSystem.ReloadFromInventory(ammoTypeCount);
+            if (!unlimitedAmmo) internalAmmoCounts[ammoType] = 0;
         }
         else //Unsuccessfull
         {

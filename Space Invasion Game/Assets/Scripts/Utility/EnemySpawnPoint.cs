@@ -8,6 +8,6 @@ public class EnemySpawnPoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.instance.RegisterEnemySpawnPoint(transform.position);
+        GameManager.RegisterEnemySpawnPoint(transform.position);
     }
 }
