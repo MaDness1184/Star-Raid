@@ -20,6 +20,7 @@ public class PlayerInteraction : EntityInteraction
     [SerializeField] private float pickupDistance = 1f;
     [SerializeField] private Transform holdingSpot;
     [SerializeField] private float rotationRate = 1f;
+    [SerializeField] private ToggleEvent buildingInteractionEvent;
 
     [Header("Debugging")]
     [SerializeField] private float sqrDistanceScan;
@@ -30,17 +31,18 @@ public class PlayerInteraction : EntityInteraction
     [SerializeField] private bool currentColliderFound = false;
     [SerializeField] private Collider2D[] cachedColliders; // TODO: Remove when finish debugging
 
-    private bool highlightValid;
-    [SerializeField] private float sqrPlaceableRange;
-    [SerializeField] private float mouseSqDistance;
-    private Vector3 cachedHit; // TODO: Remove when finish debugging
-    private Vector3 holdingSpotDirection;
-    [SerializeField] private Vector3 mousePosition;
-    private bool itemPickedUp = false;
-    private Interactable cachedServerInteractable;
     private SpriteRenderer replicaSpriteRenderer;
     private InputAction inputAction;
     private Animator animator;
+
+    private bool highlightValid;
+    private float sqrPlaceableRange;
+    private float mouseSqDistance;
+    private Vector3 cachedHit; // TODO: Remove when finish debugging
+    private Vector3 holdingSpotDirection;
+    private Vector3 mousePosition;
+    private bool itemPickedUp = false;
+    private bool interactingWithBuilding = false;
 
     Vector3 cachedPosition; //TODO cache position to maximize efficiency
     private float nextScan;
@@ -72,9 +74,6 @@ public class PlayerInteraction : EntityInteraction
         ScanClosetInteractable();
     }
 
-    [SerializeField] Collider2D hitCache;
-    [SerializeField] bool highlightValidCache;
-
     private void MoveGridHighlight()
     {
         if (Time.time < nextValid) return;
@@ -86,15 +85,13 @@ public class PlayerInteraction : EntityInteraction
 
         RaycastHit2D rayHit = Physics2D.Raycast(transform.position, mouseDirection, mouseDirection.magnitude, validRayBlockLayer);
         Collider2D pointHit = Physics2D.OverlapPoint(mousePosition, validPointBlockLayer);
-        //hitCache = hit;
         highlightValid = !rayHit && !pointHit && mouseSqDistance <= sqrPlaceableRange;
-        highlightValidCache = highlightValid;
 
         GridHighlight.main.SetValid(highlightValid);
         GridHighlight.main.MoveTo(mousePosition);
     }
 
-    #region Interaction
+   
 
     [ClientCallback]
     public void OnInteract(InputAction.CallbackContext context)
@@ -103,12 +100,40 @@ public class PlayerInteraction : EntityInteraction
 
         if (context.performed)
         {
-            if (!itemPickedUp)
-                PickupInteractable();
-            else
-                PutdownInteractable();
+            if (currentInteractable == null) return;
+
+            if(currentInteractable.GetComponent<Placeable>())
+            {
+                if (!itemPickedUp)
+                    PickupInteractable();
+                else
+                    PutdownInteractable();
+
+                // TODO: put this in a method
+                interactingWithBuilding = false;
+                CraftingUI.instance.SetVisibility(false);
+                buildingInteractionEvent.OnTurnOff?.Invoke();
+            }
+            else if(currentInteractable.GetComponent<Building>())
+            {
+                CraftingStationInteraction();
+            }
+
         } 
     }
+    #region Bulding Interaction
+
+
+    private void CraftingStationInteraction()
+    {
+        interactingWithBuilding = true;
+        CraftingUI.instance.SetVisibility(true);
+        buildingInteractionEvent.OnTurnOn?.Invoke();
+    }
+
+    #endregion
+
+    #region Placeable Interaction
 
     [Client]
     private void PutdownInteractable()
@@ -118,7 +143,7 @@ public class PlayerInteraction : EntityInteraction
 
         replicaSpriteRenderer.sprite = null;
         
-        CmdPutdownInteractable(mousePosition);
+        CmdPutdownInteractable(currentInteractable, mousePosition);
 
         animator.Play("Put Down"); // PutDown Animation Trigger
         animator.SetBool("isAiming", true);
@@ -127,17 +152,15 @@ public class PlayerInteraction : EntityInteraction
     }
 
     [Command]
-    private void CmdPutdownInteractable(Vector3 newPosition)
+    private void CmdPutdownInteractable(Interactable interactable, Vector3 newPosition)
     {
-
-        if (cachedServerInteractable.TryGetComponent<TurretStatus>(out TurretStatus turret))
+        if (interactable.TryGetComponent<TurretStatus>(out TurretStatus turret))
         {
             turret.Dropdown(new Vector3(Mathf.RoundToInt(newPosition.x),
                 Mathf.RoundToInt(newPosition.y)));
         }
 
         replicaSpriteRenderer.sprite = null;
-        cachedServerInteractable = null;
     }
 
     [Client]
@@ -146,26 +169,24 @@ public class PlayerInteraction : EntityInteraction
         if (!currentInteractable) return;
         GridHighlight.main.SetShow(true);
 
-        replicaSpriteRenderer.sprite = currentInteractable.GetPickupSprite();
+        replicaSpriteRenderer.sprite = currentInteractable.GetComponent<Placeable>().pickUpSprite;
         replicaObject.transform.position = currentInteractable.transform.position;
 
         animator.SetBool("isAiming", false);
         animator.Play("Pick Up"); // PickUp Animation Trigger
 
         AnimateReplicaObject();
-        CmdPickupInteractable(currentInteractable.GetComponent<NetworkIdentity>().netId);
+        CmdPickupInteractable(currentInteractable);
 
         itemPickedUp = true;
     }
 
     [Command]
-    private void CmdPickupInteractable(uint replicaNetId)
+    private void CmdPickupInteractable(Interactable interactable)
     {
-        cachedServerInteractable = GetServerCurrentInteractable(replicaNetId);
+        replicaSpriteRenderer.sprite = interactable.GetComponent<Placeable>().pickUpSprite;
 
-        replicaSpriteRenderer.sprite = cachedServerInteractable.GetPickupSprite();
-
-        if (cachedServerInteractable.TryGetComponent<TurretStatus>(out TurretStatus turret))
+        if (interactable.TryGetComponent<TurretStatus>(out TurretStatus turret))
             turret.Pickup();
     }
 
@@ -210,30 +231,6 @@ public class PlayerInteraction : EntityInteraction
         }
     }
 
-    [Server]
-    private Interactable GetServerCurrentInteractable(uint replicaNetId)
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactableLayer);
-
-        if (colliders.Length <= 0)
-        {
-            DebugConsole.LogWarning("Cannot find currentInteractable on server side. Something is terribly wrong");
-            return null;
-        }
-
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider.TryGetComponent<NetworkIdentity>(out NetworkIdentity targetIdentity))
-            {
-                if (targetIdentity.netId == replicaNetId)
-                    return targetIdentity.GetComponent<Interactable>();
-            }
-        }
-
-        DebugConsole.LogWarning("Cannot find currentInteractable on server side. Something went terribly wrong");
-        return null;
-    }
-
     #endregion
 
     #region InteractionScan
@@ -248,6 +245,8 @@ public class PlayerInteraction : EntityInteraction
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactableLayer);
 
+        // If no collider is found, assume player is out of currentInteractable range
+        //  and remove them.
         cachedColliders = colliders;
         if (colliders.Length <= 0)
         {
@@ -258,6 +257,9 @@ public class PlayerInteraction : EntityInteraction
         closetSqrDistance = 99f;
         closetCollider = null;
 
+        // Check for closet distance
+        // TODO: cache candidate list, sort by distance in case
+        //  previous candidate is invalid
         foreach (Collider2D collider in colliders)
         {
             if (collider == closetCollider)
@@ -271,15 +273,18 @@ public class PlayerInteraction : EntityInteraction
             closetCollider = collider;
         }
 
-        if (currentCollider == closetCollider) return;
+        // Check if the collider is already highlighted
+        if (currentCollider != null)
+            if(currentCollider == closetCollider) return;
+
+        // Check if wall is in the way
+        RaycastHit2D hit = Physics2D.Raycast(transform.position,
+                closetCollider.transform.position - transform.position, interactionRange, interactBlockLayer);
+        if (hit.collider != null)
+            if (hit.collider != closetCollider) return;
 
         if (closetCollider.TryGetComponent<Interactable>(out Interactable interactable))
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position,
-                closetCollider.transform.position - transform.position, interactionRange, interactBlockLayer);
-
-            if (hit.collider != closetCollider) return;
-
             currentColliderFound = true;
             currentCollider = closetCollider;
 
@@ -288,6 +293,8 @@ public class PlayerInteraction : EntityInteraction
             currentInteractable.LocalHighlight(true);
         }
 
+        // If currentInteractable is not found when scanning, assumes player is out of range
+        //  and remove it from cache
         if (!currentColliderFound)
             ClearClosetInteractable();
         else
@@ -312,6 +319,6 @@ public class PlayerInteraction : EntityInteraction
         Gizmos.DrawWireSphere(transform.position, interactionRange);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, placeableRange);
-        Gizmos.DrawLine(transform.position, cachedHit);
+        //Gizmos.DrawLine(transform.position, hitCache.transform.position);
     }
 }

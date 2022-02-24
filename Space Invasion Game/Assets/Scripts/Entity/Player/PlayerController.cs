@@ -104,8 +104,6 @@ public class PlayerController : EntityController
 
     #region Attack
 
-
-
     [ClientCallback]
     public void OnDebugConsole(InputAction.CallbackContext context)
     {

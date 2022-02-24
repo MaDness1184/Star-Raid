@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ShaderController))]
-public class Interactable : MonoBehaviour
+public class Interactable : NetworkBehaviour
 {
-    [Header("Required Components")]
-    [SerializeField] private Sprite pickUpSprite;
-
     private ShaderController shaderController;
 
     private void Start()
@@ -22,8 +19,4 @@ public class Interactable : MonoBehaviour
         shaderController.LocalHighlight(highlight);
     }
 
-    public Sprite GetPickupSprite()
-    {
-        return pickUpSprite;
-    }
 }

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760c14d617f5ca744bd6e19b3db50d78, type: 3}
+  m_Name: Suspicious Green Cube
+  m_EditorClassIdentifier: 
+  description: Wait a second, you're not suppose to have this
+  countLimit: 99
+  sprite: {fileID: -1557118561159666257, guid: 936c23d2b2a6d5d4bbc4d68e6c1fcc63, type: 3}
+  requiredMaterials: []
+  resultComponents: []

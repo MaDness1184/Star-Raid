@@ -13,7 +13,9 @@ public class EntityStatus : NetworkBehaviour
     [SerializeField] private HostilityType hostility;
 
     [Header("Entity Required Components")]
-    [SerializeField] AudioSource sfxAudioSource;
+    [SerializeField] private AudioSource sfxAudioSource;
+    [SerializeField] private LayerMask lootDropBlockLayer;
+    private LootDropController lootDropController;
 
     [Header("Entity SFX and VFX")]
     [SerializeField] private ParticleSystem entityDamagedVfxs;
@@ -36,7 +38,7 @@ public class EntityStatus : NetworkBehaviour
 
     protected virtual void Awake()
     {
-        
+        lootDropController = GetComponent<LootDropController>();
     }
 
     #region Entity Spawn and DeSpawn
@@ -161,6 +163,47 @@ public class EntityStatus : NetworkBehaviour
     public virtual void RecieveDamage(int damage, NetworkIdentity perpetratorIdentity)
     {
 
+    }
+
+    #endregion
+
+    #region Loot Drop
+
+    [Server]
+    protected void DropLoot()
+    {
+        if (lootDropController == null) return;
+
+        List<ItemCountObsolete> loots = lootDropController.GenerateLoot();
+
+        foreach(ItemCountObsolete loot in loots)
+        {
+            for(int i = 0; i < loot.count; i++)
+            {
+                StartCoroutine(FindSuitableDropLocation(transform.position, loot));
+            }
+        }
+    }
+
+    [Server]
+    private IEnumerator FindSuitableDropLocation(Vector2 position, ItemCountObsolete loot)
+    {
+        Vector2 randomLocation;
+        Collider2D[] hits;
+        do
+        {
+            randomLocation = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
+            hits = Physics2D.OverlapCircleAll(position + randomLocation, 0.25f, lootDropBlockLayer);
+
+            yield return null;
+        }
+        while (hits.Length > 0);
+
+        GameObject sceneItemReplica = Instantiate(lootDropController.sceneItemReplica,
+            position + randomLocation, Quaternion.identity);
+        sceneItemReplica.GetComponent<SceneItemReplica>().SetCurrentItem(loot.item);
+
+        NetworkServer.Spawn(sceneItemReplica);
     }
 
     #endregion

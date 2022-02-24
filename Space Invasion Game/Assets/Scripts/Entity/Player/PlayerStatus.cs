@@ -66,6 +66,7 @@ public class PlayerStatus : EntityStatus
 
         Camera.main.GetComponent<CinemachineVirtualCamera>().Follow = gameObject.transform;
         DebugConsole.main.SetPlayer(this);
+        CraftingUI.instance.SetPlayerStatus(this);
     }
 
     [Server]

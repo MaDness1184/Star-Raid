@@ -111,7 +111,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7951272049336202499}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &3156198791015363798
 BoxCollider2D:
@@ -250,7 +250,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7951272049336202499}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2031655802343142893
 GameObject:
@@ -478,7 +478,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7951272049336202499}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8673643172037475651
 SpriteRenderer:
@@ -814,7 +814,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7951272049336202499}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!114 &4858537515180126694
 MonoBehaviour:
@@ -899,11 +899,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1971885162397871580}
-  - {fileID: 3588510842360895016}
   - {fileID: 2648900346771917849}
   - {fileID: 1899888668384502390}
   - {fileID: 5446660830208009162}
   - {fileID: 3887182485529365311}
+  - {fileID: 3588510842360895016}
   - {fileID: 7730344225468031251}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1284,6 +1284,9 @@ MonoBehaviour:
   maxHP: 10
   hostility: 0
   sfxAudioSource: {fileID: 1674413452759299928}
+  lootDropBlockLayer:
+    serializedVersion: 2
+    m_Bits: 4160
   entityDamagedVfxs: {fileID: 1064646869523199066, guid: 6ac296d6a29a2a440a0f9680211cf352, type: 3}
   entityDeSpawnVfxs:
   - {fileID: 1484193386444201607, guid: d64650720ad7f134a96abe5a24a90038, type: 3}
@@ -1471,6 +1474,24 @@ MonoBehaviour:
     count: 100
   - ammoType: 4
     count: 200
+  fakeInventory:
+  - {fileID: 11400000, guid: 65f98396b0c0c484f865b7ec6dc72986, type: 2}
+  - {fileID: 11400000, guid: 1749c88b7269ac840ae420dbf84a68ca, type: 2}
+  - {fileID: 11400000, guid: 8e29a1da4db51eb4586a5caf1f913a29, type: 2}
+  - {fileID: 11400000, guid: 31c6377c41e7b08409ecada587674db6, type: 2}
+  - {fileID: 11400000, guid: 330121361d0952948afa7deae6bac16c, type: 2}
+  - {fileID: 11400000, guid: f6dfad43039c76c4f9de2bfae4018b45, type: 2}
+  - {fileID: 11400000, guid: c42fc68ea31877140a0d5d57022b4fe3, type: 2}
+  - {fileID: 11400000, guid: 5b41dc0177957d64cb165765814ff2ef, type: 2}
+  - {fileID: 11400000, guid: 15fda174a44ab3a428d28144ec14b5c2, type: 2}
+  - {fileID: 11400000, guid: 7485d1e83c171f64ea2ae8020e2c5165, type: 2}
+  - {fileID: 11400000, guid: 3175433f4537dc34c8d34fc7e10ca8c5, type: 2}
+  - {fileID: 11400000, guid: 7e71f2b0de86baa4088e0e05aeccc338, type: 2}
+  - {fileID: 11400000, guid: 55b963640a9eb1a4c9fa54bcca2d3003, type: 2}
+  pickupRange: 3
+  itemLayerMask:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!114 &85129488319604111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,13 +1506,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  interactionRange: 2
+  interactionRange: 3
   placeableRange: 4
   scanCdr: 0.1
   replicaObject: {fileID: 4468741919308274261}
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 16640
   interactBlockLayer:
     serializedVersion: 2
     m_Bits: 4416
@@ -1504,6 +1525,37 @@ MonoBehaviour:
   pickupDistance: 1
   holdingSpot: {fileID: 3887182485529365311}
   rotationRate: 90
+  buildingInteractionEvent:
+    _OnTurnOn:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3822663126351197365}
+          m_TargetAssemblyTypeName: PlayerStatus, Assembly-CSharp
+          m_MethodName: Stun
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    _OnTurnOff:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3822663126351197365}
+          m_TargetAssemblyTypeName: PlayerStatus, Assembly-CSharp
+          m_MethodName: Stun
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   sqrDistanceScan: 0
   closetSqrDistance: 99
   closetCollider: {fileID: 0}
@@ -1511,11 +1563,6 @@ MonoBehaviour:
   currentInteractable: {fileID: 0}
   currentColliderFound: 0
   cachedColliders: []
-  sqrPlaceableRange: 0
-  mouseSqDistance: 0
-  mousePosition: {x: 0, y: 0, z: 0}
-  hitCache: {fileID: 0}
-  highlightValidCache: 0
   currentAngle: 0
 --- !u!114 &8445669403202363763
 MonoBehaviour:
@@ -1586,7 +1633,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4206579098818716959, guid: 6ac296d6a29a2a440a0f9680211cf352, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4206579098818716959, guid: 6ac296d6a29a2a440a0f9680211cf352, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1700,13 +1747,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4c934c0576b32245a04acc08db4bb23, type: 3}
---- !u!4 &2788200057795103504 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6622361333833571475, guid: d4c934c0576b32245a04acc08db4bb23, type: 3}
-  m_PrefabInstance: {fileID: 9031678394184980355}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5681680017805041999 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3715353669915588300, guid: d4c934c0576b32245a04acc08db4bb23, type: 3}
+  m_PrefabInstance: {fileID: 9031678394184980355}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2788200057795103504 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6622361333833571475, guid: d4c934c0576b32245a04acc08db4bb23, type: 3}
   m_PrefabInstance: {fileID: 9031678394184980355}
   m_PrefabAsset: {fileID: 0}

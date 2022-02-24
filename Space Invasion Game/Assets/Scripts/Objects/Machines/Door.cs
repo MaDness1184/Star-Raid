@@ -3,13 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum DoorState { unlocked, locked, broken, smashed }
+
 public class Door : MonoBehaviour
 {
-    [SerializeField] private bool isLocked, isBroken, isOpen;
+    [SerializeField] private DoorState currentState;
     [SerializeField] private GameObject lockedIndicator;
     [SerializeField] private GameObject obsticleCollider;
 
     List<uint> netIDList = new List<uint>();
+
+    private bool isOpen;
 
     // Components
     Animator animator;
@@ -20,19 +24,16 @@ public class Door : MonoBehaviour
 
         if (lockedIndicator.activeInHierarchy)
             lockedIndicator.SetActive(false);
+        if (obsticleCollider == null)
+            Debug.LogError("obsticleCollider not referenced on " + gameObject.name);
 
-        if (isLocked)
+        if (currentState == DoorState.locked)
         {
-            obsticleCollider.SetActive(true);
-            animator.SetBool("isLocked", true);
-            animator.Play("Locked");
-            lockedIndicator.SetActive(true);
+            Lock();
         }
-        else if (isBroken) // added else if as to not cause a bug if isLocked and isBroken are true
+        else if (currentState == DoorState.broken) // added else if as to not cause a bug if isLocked and isBroken are true
         {
-            obsticleCollider.SetActive(true);
-            animator.SetBool("isBroken", true);
-            animator.Play("Broken");
+            Broken();
         }
         else
         {
@@ -40,42 +41,33 @@ public class Door : MonoBehaviour
         }
     }
 
+    #region States
+
+    private void Lock()
+    {
+        obsticleCollider.SetActive(true);
+        animator.SetBool("isLocked", true);
+        animator.Play("Locked");
+        lockedIndicator.SetActive(true);
+    }
+
+    private void Broken()
+    {
+        obsticleCollider.SetActive(true);
+        animator.SetBool("isBroken", true);
+        animator.Play("Broken");
+    }
+
     public void Unlock()
     {
         animator.SetBool("isLocked", false);
         lockedIndicator.SetActive(false);
         obsticleCollider.SetActive(false);
+        currentState = DoorState.unlocked;
     }
+    #endregion
 
-    public void Fix()
-    {
-        animator.SetBool("isBroken", false);
-        obsticleCollider.SetActive(false);
-    }
-
-    public void Open()
-    {
-        if (!isLocked && !isBroken)
-        {
-            if (!isOpen)
-            {
-                animator.SetTrigger("OpenTrigger");
-                isOpen = true;
-            }
-        }
-    }
-
-    public void Close()
-    {
-        if (!isLocked && !isBroken)
-        {
-            if (isOpen)
-            {
-                animator.SetTrigger("CloseTrigger");
-                isOpen = false;
-            }
-        }
-    }
+    #region Collider
 
     private void OnTriggerEnter2D(Collider2D otherCollision)
     {
@@ -91,16 +83,6 @@ public class Door : MonoBehaviour
                 netIDList.Add(identity.netId);
             }
         }
-
-        /*if (otherCollision.CompareTag("Interactive"))
-        {
-            if (!isOpen)
-            {
-                Open();
-            }
-
-            unitsInCollider++;
-        }*/
     }
 
     private void OnTriggerExit2D(Collider2D otherCollision)
@@ -115,16 +97,40 @@ public class Door : MonoBehaviour
             if (netIDList.Count <= 0)
                 Close();
         }
-
-        /*if (otherCollision.CompareTag("Interactive"))
-        {
-            unitsInCollider--;
-
-            if (unitsInCollider <= 0)
-            {
-                Close();
-                unitsInCollider = 0;
-            }
-        }*/
     }
+    #endregion
+
+    #region Actions
+
+    private void Open()
+    {
+        if (currentState == DoorState.unlocked)
+        {
+            if (!isOpen)
+            {
+                animator.SetTrigger("OpenTrigger");
+                isOpen = true;
+            }
+        }
+    }
+
+    private void Close()
+    {
+        if (currentState == DoorState.unlocked)
+        {
+            if (isOpen)
+            {
+                animator.SetTrigger("CloseTrigger");
+                isOpen = false;
+            }
+        }
+    }
+
+    private void Fix()
+    {
+        animator.SetBool("isBroken", false);
+        obsticleCollider.SetActive(false);
+        currentState = DoorState.unlocked;
+    }
+    #endregion
 }

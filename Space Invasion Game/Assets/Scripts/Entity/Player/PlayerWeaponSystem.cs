@@ -42,7 +42,7 @@ public class PlayerWeaponSystem : EntityWeaponSystem
 
         if (!NetworkClient.ready || currentAmmoCounts.Count <= 0) return;
 
-        UpdateAmmoText();
+        UpdateUIText();
     }
 
     #region PrimaryAttack
@@ -231,12 +231,13 @@ public class PlayerWeaponSystem : EntityWeaponSystem
 
     #endregion
 
-    private void UpdateAmmoText()
+    private void UpdateUIText()
     {
         PlayerUI.instance.SetInventoryString(currentWeapon.name + " "
             + currentAmmoCounts[currentWeaponIndex]
             + "/" + currentWeapon.magazineSize
-            + "\n" + playerInventory.AmmoCountToString());
+            + "\n" + playerInventory.AmmoCountToString()
+            + "\n" + playerInventory.ItemCountToString());
     }
 
 

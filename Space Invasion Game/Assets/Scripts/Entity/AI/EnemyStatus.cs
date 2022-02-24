@@ -83,7 +83,9 @@ public class EnemyStatus : EntityStatus
             RpcPlayOnDespawnVFXs(transform.position);
             RpcPlayOnDeSpawnSFXs();
 
+            DropLoot();
             DeSpawnToPool();
+            
             GameManager.instance.NotifyEnemyDeSpawn(perpetratorIdentity);
         }
         else

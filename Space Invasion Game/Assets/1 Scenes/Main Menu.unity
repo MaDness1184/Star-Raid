@@ -1325,8 +1325,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AssetsPPU: 32
-  m_RefResolutionX: 400
-  m_RefResolutionY: 225
+  m_RefResolutionX: 640
+  m_RefResolutionY: 360
   m_UpscaleRT: 1
   m_PixelSnapping: 0
   m_CropFrameX: 0
@@ -4165,6 +4165,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 6914757095847197663, guid: ced820c0492b8c64ebc766045f2e6c6b, type: 3}
   - {fileID: 5879406676334143174, guid: c8fd9e1a4de124042be2388de51110ba, type: 3}
+  - {fileID: 9089260028529807785, guid: 7d340233a36c44e43a278bd882669eb5, type: 3}
 --- !u!114 &1435089726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4649,7 +4650,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e2d92520b27b6bd498d860a967c83072, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a79e62e43d2357049aa9ab6cdb3ebd47, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
